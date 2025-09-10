@@ -1,0 +1,116 @@
+/* ===== 设计系统 - 基于原型设计规范，适配小程序 ===== */
+
+/* 颜色系统 - 使用 Less 变量 */
+@primary-color: #667eea;
+@primary-light: #8fa4f3;
+@primary-dark: #4c63d2;
+@secondary-color: #764ba2;
+
+/* 渐变色 */
+@primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+@success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+@warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+@error-gradient: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+
+/* 中性色 */
+@white: #ffffff;
+@gray-50: #f8f9fa;
+@gray-100: #f5f5f5;
+@gray-200: #e9ecef;
+@gray-300: #dee2e6;
+@gray-400: #ced4da;
+@gray-500: #adb5bd;
+@gray-600: #6c757d;
+@gray-700: #495057;
+@gray-800: #343a40;
+@gray-900: #212529;
+
+/* 语义色 */
+@success-color: #28a745;
+@warning-color: #ffc107;
+@error-color: #dc3545;
+@info-color: #17a2b8;
+
+/* 背景色 */
+@bg-primary: @gray-100;
+@bg-surface: @white;
+@bg-dark-primary: #1a1a1a;
+@bg-dark-surface: #2a2a2a;
+
+/* 文本颜色 */
+@text-primary: @gray-800;
+@text-secondary: @gray-600;
+@text-tertiary: @gray-500;
+@text-disabled: @gray-400;
+@text-white: @white;
+@text-dark-primary: #e0e0e0;
+@text-dark-secondary: #b0b0b0;
+@text-dark-tertiary: #909090;
+@text-dark-disabled: #707070;
+
+/* 边框颜色 */
+@border-color: @gray-300;
+@border-light: @gray-200;
+@border-dark: @gray-400;
+@border-dark-color: #444444;
+
+/* 间距系统 (rpx) */
+@space-xs: 4rpx;
+@space-sm: 8rpx;
+@space-md: 16rpx;
+@space-lg: 24rpx;
+@space-xl: 32rpx;
+@space-2xl: 48rpx;
+@space-3xl: 64rpx;
+
+/* 圆角系统 (rpx) */
+@radius-none: 0;
+@radius-sm: 4rpx;
+@radius-md: 8rpx;
+@radius-lg: 12rpx;
+@radius-xl: 20rpx;
+@radius-2xl: 24rpx;
+@radius-full: 9999rpx;
+
+/* 字体大小 (rpx) */
+@font-xs: 20rpx;
+@font-sm: 24rpx;
+@font-base: 28rpx;
+@font-lg: 32rpx;
+@font-xl: 36rpx;
+@font-2xl: 48rpx;
+@font-3xl: 64rpx;
+
+/* 行高 */
+@line-height-none: 1;
+@line-height-tight: 1.25;
+@line-height-snug: 1.375;
+@line-height-normal: 1.5;
+@line-height-relaxed: 1.625;
+@line-height-loose: 2;
+
+/* 阴影系统 */
+@shadow-none: none;
+@shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+@shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+@shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+@shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+
+/* 动画持续时间 */
+@duration-fast: 0.15s;
+@duration-normal: 0.3s;
+@duration-slow: 0.5s;
+
+/* 动画缓动函数 */
+@ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+@ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+/* 响应式断点 */
+@screen-sm: 600rpx;
+@screen-md: 750rpx;
+@screen-lg: 900rpx;
+
+/* 按钮大小 */
+@button-size-sm: 24rpx;
+@button-size-md: 32rpx;
+@button-size-lg: 40rpx;

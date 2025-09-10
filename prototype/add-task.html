@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加任务</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .save-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .form-container {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .priority-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .priority-option {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .priority-option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+            color: #667eea;
+        }
+        
+        .priority-high {
+            border-color: #ff6b6b;
+        }
+        
+        .priority-high.selected {
+            border-color: #ff6b6b;
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .priority-medium {
+            border-color: #ffa726;
+        }
+        
+        .priority-medium.selected {
+            border-color: #ffa726;
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .priority-low {
+            border-color: #66bb6a;
+        }
+        
+        .priority-low.selected {
+            border-color: #66bb6a;
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .category-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .category-tag {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .category-tag.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .datetime-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .datetime-input {
+            flex: 1;
+        }
+        
+        .reminder-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 8px;
+        }
+        
+        .reminder-label {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background: #ccc;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: #667eea;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .form-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <button class="back-btn">←</button>
+            <h1>添加任务</h1>
+            <button class="save-btn">保存</button>
+        </div>
+        
+        <div class="form-container">
+            <!-- 基本信息 -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="section-icon">📝</span>
+                    基本信息
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">任务标题 *</label>
+                    <input type="text" class="form-input" placeholder="请输入任务标题">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">任务描述</label>
+                    <textarea class="form-input form-textarea" placeholder="请输入任务描述（可选）"></textarea>
+                </div>
+            </div>
+            
+            <!-- 优先级设置 -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="section-icon">⚡</span>
+                    优先级
+                </div>
+                
+                <div class="priority-group">
+                    <div class="priority-option priority-high">
+                        <div style="font-size: 12px; font-weight: 500;">高优先级</div>
+                        <div style="font-size: 10px; margin-top: 2px;">紧急重要</div>
+                    </div>
+                    <div class="priority-option priority-medium selected">
+                        <div style="font-size: 12px; font-weight: 500;">中优先级</div>
+                        <div style="font-size: 10px; margin-top: 2px;">一般重要</div>
+                    </div>
+                    <div class="priority-option priority-low">
+                        <div style="font-size: 12px; font-weight: 500;">低优先级</div>
+                        <div style="font-size: 10px; margin-top: 2px;">不紧急</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分类设置 -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="section-icon">🏷️</span>
+                    分类标签
+                </div>
+                
+                <div class="category-group">
+                    <div class="category-tag selected">工作</div>
+                    <div class="category-tag">生活</div>
+                    <div class="category-tag">学习</div>
+                    <div class="category-tag">健康</div>
+                    <div class="category-tag">娱乐</div>
+                    <div class="category-tag">购物</div>
+                </div>
+            </div>
+            
+            <!-- 时间设置 -->
+            <div class="form-section">
+                <div class="section-title">
+                    <span class="section-icon">⏰</span>
+                    时间安排
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">截止日期</label>
+                    <div class="datetime-group">
+                        <input type="date" class="form-input datetime-input">
+                        <input type="time" class="form-input datetime-input">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">提醒设置</label>
+                    <div class="reminder-group">
+                        <span class="reminder-label">开启提醒</span>
+                        <div class="toggle-switch active"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 提交按钮 -->
+            <button class="submit-btn">创建任务</button>
+        </div>
+    </div>
+    
+    <script>
+        // 优先级选择
+        document.querySelectorAll('.priority-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.priority-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+        
+        // 分类标签选择
+        document.querySelectorAll('.category-tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+        
+        // 提醒开关
+        document.querySelector('.toggle-switch').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

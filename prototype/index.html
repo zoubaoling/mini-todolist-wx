@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能待办清单 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            margin: -10px 20px 20px;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        .search-bar {
+            padding: 0 20px 15px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            padding: 0 20px 15px;
+            gap: 10px;
+        }
+        
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .task-list {
+            padding: 0 20px;
+        }
+        
+        .task-item {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .task-item.high-priority {
+            border-left-color: #ff6b6b;
+        }
+        
+        .task-item.medium-priority {
+            border-left-color: #ffa726;
+        }
+        
+        .task-item.low-priority {
+            border-left-color: #66bb6a;
+        }
+        
+        .task-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+        
+        .task-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            margin-right: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .task-checkbox.checked {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+        
+        .task-title {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .task-priority {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .priority-high {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .priority-medium {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .priority-low {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .task-date {
+            display: flex;
+            align-items: center;
+        }
+        
+        .task-category {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+        
+        .floating-add-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .floating-add-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .empty-state h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .empty-state p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>智能待办清单</h1>
+            <div class="subtitle">让生活更有序</div>
+        </div>
+        
+        <!-- 统计栏 -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">总任务</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">已完成</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">进行中</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">67%</div>
+                <div class="stat-label">完成率</div>
+            </div>
+        </div>
+        
+        <!-- 搜索栏 -->
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="搜索任务...">
+        </div>
+        
+        <!-- 筛选标签 -->
+        <div class="filter-tabs">
+            <div class="filter-tab active">全部</div>
+            <div class="filter-tab">工作</div>
+            <div class="filter-tab">生活</div>
+            <div class="filter-tab">学习</div>
+        </div>
+        
+        <!-- 任务列表 -->
+        <div class="task-list">
+            <div class="task-item high-priority">
+                <div class="task-header">
+                    <div class="task-checkbox"></div>
+                    <div class="task-title">完成项目报告</div>
+                    <div class="task-priority priority-high">高优先级</div>
+                </div>
+                <div class="task-meta">
+                    <div class="task-date">📅 今天 18:00</div>
+                    <div class="task-category">工作</div>
+                </div>
+            </div>
+            
+            <div class="task-item medium-priority">
+                <div class="task-header">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-title">购买生活用品</div>
+                    <div class="task-priority priority-medium">中优先级</div>
+                </div>
+                <div class="task-meta">
+                    <div class="task-date">📅 明天 10:00</div>
+                    <div class="task-category">生活</div>
+                </div>
+            </div>
+            
+            <div class="task-item low-priority completed">
+                <div class="task-header">
+                    <div class="task-checkbox checked"></div>
+                    <div class="task-title">阅读技术文档</div>
+                    <div class="task-priority priority-low">低优先级</div>
+                </div>
+                <div class="task-meta">
+                    <div class="task-date">📅 已完成</div>
+                    <div class="task-category">学习</div>
+                </div>
+            </div>
+            
+            <div class="task-item high-priority">
+                <div class="task-header">
+                    <div class="task-checkbox"></div>
+                    <div class="task-title">准备会议材料</div>
+                    <div class="task-priority priority-high">高优先级</div>
+                </div>
+                <div class="task-meta">
+                    <div class="task-date">📅 明天 14:00</div>
+                    <div class="task-category">工作</div>
+                </div>
+            </div>
+            
+            <div class="task-item medium-priority">
+                <div class="task-header">
+                    <div class="task-checkbox"></div>
+                    <div class="task-title">运动健身</div>
+                    <div class="task-priority priority-medium">中优先级</div>
+                </div>
+                <div class="task-meta">
+                    <div class="task-date">📅 每天 19:00</div>
+                    <div class="task-category">生活</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 浮动添加按钮 -->
+        <div class="floating-add-btn">+</div>
+    </div>
+</body>
+</html>

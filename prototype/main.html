@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能待办清单小程序 - 原型展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .prototype-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .prototype-item {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .prototype-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .prototype-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .prototype-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .prototype-desc {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .prototype-frame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background: #f8f9fa;
+        }
+        
+        .features-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .features-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            background: #e3f2fd;
+            transform: translateY(-2px);
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .tech-stack {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .tech-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .tech-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .prototype-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .prototype-frame {
+                height: 500px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 页面标题 -->
+        <div class="header">
+            <h1>智能待办清单小程序</h1>
+            <p>基于PRD需求文档的完整原型展示</p>
+        </div>
+        
+        <!-- 原型展示网格 -->
+        <div class="prototype-grid">
+            <!-- 首页 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">首页 - 任务列表</div>
+                    <div class="prototype-desc">展示任务列表、统计信息和快速操作</div>
+                </div>
+                <iframe src="index.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 添加任务页面 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">添加任务</div>
+                    <div class="prototype-desc">创建新任务，设置优先级和分类</div>
+                </div>
+                <iframe src="add-task.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 任务详情页面 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">任务详情</div>
+                    <div class="prototype-desc">查看任务详情、进度跟踪和子任务</div>
+                </div>
+                <iframe src="task-detail.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 统计页面 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">统计中心</div>
+                    <div class="prototype-desc">数据统计、趋势分析和成就系统</div>
+                </div>
+                <iframe src="statistics.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 个人中心 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">个人中心</div>
+                    <div class="prototype-desc">用户信息、设置和账户管理</div>
+                </div>
+                <iframe src="user-center.html" class="prototype-frame"></iframe>
+            </div>
+        </div>
+        
+        <!-- 功能特性 -->
+        <div class="features-section">
+            <div class="features-title">核心功能特性</div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">📝</div>
+                    <div class="feature-title">智能任务管理</div>
+                    <div class="feature-desc">创建、编辑、删除任务，支持优先级和分类设置</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">数据统计分析</div>
+                    <div class="feature-desc">完成率统计、趋势分析、智能洞察和建议</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏷️</div>
+                    <div class="feature-title">智能分类</div>
+                    <div class="feature-desc">自动分类任务，支持标签系统和智能搜索</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⏰</div>
+                    <div class="feature-title">时间管理</div>
+                    <div class="feature-desc">截止时间设置、提醒功能、进度跟踪</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">☁️</div>
+                    <div class="feature-title">数据同步</div>
+                    <div class="feature-desc">本地存储、云端备份、多设备同步</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🏆</div>
+                    <div class="feature-title">成就系统</div>
+                    <div class="feature-desc">徽章奖励、连续打卡、效率提升激励</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 技术栈 -->
+        <div class="tech-stack">
+            <div class="tech-title">技术实现</div>
+            <div class="tech-list">
+                <div class="tech-tag">微信小程序</div>
+                <div class="tech-tag">TypeScript</div>
+                <div class="tech-tag">Less</div>
+                <div class="tech-tag">云开发</div>
+                <div class="tech-tag">云数据库</div>
+                <div class="tech-tag">云函数</div>
+                <div class="tech-tag">本地存储</div>
+                <div class="tech-tag">Canvas图表</div>
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            <p>智能待办清单小程序原型 - 基于PRD需求文档设计</p>
+            <p style="margin-top: 10px; font-size: 14px;">支持响应式设计，适配各种设备尺寸</p>
+        </div>
+    </div>
+</body>
+</html>

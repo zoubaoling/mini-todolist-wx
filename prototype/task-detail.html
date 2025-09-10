@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务详情</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .menu-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .task-header {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .task-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .priority-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .priority-high {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .priority-medium {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .priority-low {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .category-badge {
+            background: #f0f0f0;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-completed {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .task-description {
+            color: #666;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+        
+        .info-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .progress-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .btn-danger {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .subtasks {
+            margin-top: 15px;
+        }
+        
+        .subtask-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .subtask-item:last-child {
+            border-bottom: none;
+        }
+        
+        .subtask-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ddd;
+            border-radius: 3px;
+            margin-right: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .subtask-checkbox.checked {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+        
+        .subtask-text {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .subtask-text.completed {
+            text-decoration: line-through;
+            color: #999;
+        }
+        
+        .add-subtask {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            color: #667eea;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .add-subtask-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .notes-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            background: #f8f9fa;
+        }
+        
+        .notes-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <button class="back-btn">←</button>
+            <h1>任务详情</h1>
+            <button class="menu-btn">⋯</button>
+        </div>
+        
+        <div class="content">
+            <!-- 任务基本信息 -->
+            <div class="task-header">
+                <div class="task-title">完成项目报告</div>
+                <div class="task-meta">
+                    <div class="priority-badge priority-high">高优先级</div>
+                    <div class="category-badge">工作</div>
+                    <div class="status-badge status-pending">进行中</div>
+                </div>
+                <div class="task-description">
+                    需要完成Q4季度项目总结报告，包括项目进度、成果展示、问题分析和下季度规划等内容。报告需要在下周一前提交给上级领导。
+                </div>
+            </div>
+            
+            <!-- 任务信息 -->
+            <div class="info-section">
+                <div class="section-title">
+                    <span class="section-icon">📋</span>
+                    任务信息
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <span style="margin-right: 8px;">📅</span>
+                        创建时间
+                    </div>
+                    <div class="info-value">2024-01-15 09:30</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <span style="margin-right: 8px;">⏰</span>
+                        截止时间
+                    </div>
+                    <div class="info-value">2024-01-22 18:00</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <span style="margin-right: 8px;">⏱️</span>
+                        预计用时
+                    </div>
+                    <div class="info-value">4小时</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">
+                        <span style="margin-right: 8px;">🔔</span>
+                        提醒设置
+                    </div>
+                    <div class="info-value">提前1天提醒</div>
+                </div>
+            </div>
+            
+            <!-- 进度跟踪 -->
+            <div class="progress-section">
+                <div class="section-title">
+                    <span class="section-icon">📊</span>
+                    进度跟踪
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 60%;"></div>
+                </div>
+                <div class="progress-text">已完成 60%</div>
+                
+                <div class="subtasks">
+                    <div class="subtask-item">
+                        <div class="subtask-checkbox checked">✓</div>
+                        <div class="subtask-text completed">收集项目数据</div>
+                    </div>
+                    <div class="subtask-item">
+                        <div class="subtask-checkbox checked">✓</div>
+                        <div class="subtask-text completed">整理项目成果</div>
+                    </div>
+                    <div class="subtask-item">
+                        <div class="subtask-checkbox"></div>
+                        <div class="subtask-text">编写报告内容</div>
+                    </div>
+                    <div class="subtask-item">
+                        <div class="subtask-checkbox"></div>
+                        <div class="subtask-text">制作演示PPT</div>
+                    </div>
+                    <div class="add-subtask">
+                        <span class="add-subtask-icon">+</span>
+                        添加子任务
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 备注 -->
+            <div class="notes-section">
+                <div class="section-title">
+                    <span class="section-icon">📝</span>
+                    备注
+                </div>
+                <textarea class="notes-textarea" placeholder="添加任务备注...">需要重点关注项目中的技术难点和解决方案，在报告中详细说明。</textarea>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="action-buttons">
+                <button class="action-btn btn-primary">标记完成</button>
+                <button class="action-btn btn-secondary">编辑任务</button>
+                <button class="action-btn btn-danger">删除任务</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 子任务复选框
+        document.querySelectorAll('.subtask-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                this.classList.toggle('checked');
+                const text = this.nextElementSibling;
+                text.classList.toggle('completed');
+                
+                // 更新进度条
+                updateProgress();
+            });
+        });
+        
+        // 更新进度条
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.subtask-checkbox');
+            const checkedBoxes = document.querySelectorAll('.subtask-checkbox.checked');
+            const progress = (checkedBoxes.length / checkboxes.length) * 100;
+            
+            document.querySelector('.progress-fill').style.width = progress + '%';
+            document.querySelector('.progress-text').textContent = `已完成 ${Math.round(progress)}%`;
+        }
+    </script>
+</body>
+</html>

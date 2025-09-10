@@ -1,0 +1,106 @@
+<scroll-view class="add-task-page">
+  <navigator-bar
+    title="添加任务"
+    isShowBackButton="{{true}}"
+    isShowRightButton="{{true}}"
+    barType="back" 
+    bind:right-button-tap="handleBack">
+    <button slot="right-icon" class="navigator-bar__button_right" plain="{{true}}" bindtap="handleSaveTask">
+      <text>保存</text>
+    </button>
+  </navigator-bar>
+  <view class="add-task-page__content">
+    <!-- 基本信息 -->
+    <view class="add-task-page__content-basic-info">
+      <view class="add-task-page__content-basic-info-title">
+        <text>基本信息</text>
+      </view>
+      <view class="add-task-page__content-basic-info-content">
+        <view class="add-task-page__content-basic-info-content-item">
+          <text class="add-task-page__content-basic-info-content-item-label">任务标题*</text>
+          <input
+            class="add-task-page__content-basic-info-content-item-input input-field"
+            placeholder="请输入任务标题"
+          />
+        </view>
+      </view>
+      <view class="add-task-page__content-basic-info-content">
+        <view class="add-task-page__content-basic-info-content-item">
+          <text class="add-task-page__content-basic-info-content-item-label">任务描述</text>
+          <textarea
+            class="add-task-page__content-basic-info-content-item-textarea input-field"
+            placeholder="请输入任务描述(可选)"
+          />
+        </view>
+      </view>
+    </view>
+    <!-- 优先级 -->
+    <view class="add-task-page__content-priority">
+      <view class="add-task-page__content-priority-title">
+        <text>优先级</text>
+      </view>
+      <view class="add-task-page__content-priority-content">
+        <view
+          class="add-task-page__content-priority-content-item {{item.class}}"
+          wx:for="{{priorityList}}"
+          wx:key="type"
+          data-type="{{item.type}}"
+          >
+            <text class="add-task-page__content-priority-content-item-label">{{item.label}}</text>
+            <text class="add-task-page__content-priority-content-item-desc">{{item.desc}}</text>
+          </view>
+      </view>
+    </view>
+    <!-- 分类标签 -->
+    <view class="add-task-page__content-category">
+      <view class="add-task-page__content-priority-title">
+        <text>优先级</text>
+      </view>
+      <view class="add-task-page__content-category-content">
+        <view
+          class="add-task-page__content-category-content-item {{selectedCategory === item.type ? 'selected' : ''}}"
+          wx:for="{{categoryList}}"
+          wx:key="type"
+          data-type="{{item.type}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+    <!-- 时间安排 -->
+    <view class="add-task-page__content-time card-box">
+      <view class="add-task-page__content-time-title card-box-title">
+        <text>时间安排</text>
+      </view>
+      <!-- 截止日期 -->
+      <view class="add-task-page__content-time-content">
+        <view class="add-task-page__content-time-content-date">
+          <text class="add-task-page__content-time-content-date-title">截止日期</text>
+        </view>
+        <view class="add-task-page__content-time-content-picker">
+          <picker
+            mode="date"
+          >
+            <view class="picker-display">
+              <text>选择日期</text>
+              <text class="picker-arrow">></text>
+            </view>
+          </picker>
+        </view>
+        <!-- 提醒设置 -->
+        <view class="add-task-page__content-time-content-reminder">
+          <view class="add-task-page__content-time-content-reminder-title">提醒设置</view>
+          <view class="add-task-page__content-time-content-reminder-content">
+            <text class="add-task-page__content-time-content-reminder-content-label">开启提醒</text>
+            <switch class="add-task-page__content-time-content-reminder-switch" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 创建任务 -->
+    <button
+      class="add-task-page__content-create button"
+      type="primary"
+      >
+      <text>创建任务</text>
+    </button>
+  </view>
+</scroll-view>

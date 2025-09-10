@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>统计中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .time-filter {
+            display: flex;
+            background: white;
+            border-radius: 12px;
+            padding: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .filter-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-tab.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .overview-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .overview-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .card-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .card-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .chart-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        .progress-chart {
+            margin: 20px 0;
+        }
+        
+        .progress-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .progress-label {
+            width: 80px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-work {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .progress-life {
+            background: linear-gradient(90deg, #ff6b6b 0%, #ffa726 100%);
+        }
+        
+        .progress-study {
+            background: linear-gradient(90deg, #66bb6a 0%, #4caf50 100%);
+        }
+        
+        .progress-health {
+            background: linear-gradient(90deg, #ff9800 0%, #ffc107 100%);
+        }
+        
+        .progress-value {
+            width: 40px;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .trend-chart {
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            padding: 20px 10px;
+            margin: 15px 0;
+        }
+        
+        .trend-bar {
+            width: 20px;
+            background: linear-gradient(to top, #667eea 0%, #764ba2 100%);
+            border-radius: 2px 2px 0 0;
+            position: relative;
+        }
+        
+        .trend-bar::after {
+            content: attr(data-value);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .achievement-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .achievement-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .achievement-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .achievement-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .achievement-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .achievement-item.unlocked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .achievement-item.unlocked .achievement-title,
+        .achievement-item.unlocked .achievement-desc {
+            color: white;
+        }
+        
+        .insights-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .insight-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .insight-item:last-child {
+            border-bottom: none;
+        }
+        
+        .insight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .insight-icon.positive {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .insight-icon.warning {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .insight-icon.info {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .insight-content {
+            flex: 1;
+        }
+        
+        .insight-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        
+        .insight-desc {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <h1>统计中心</h1>
+            <div class="subtitle">了解你的效率趋势</div>
+        </div>
+        
+        <div class="content">
+            <!-- 时间筛选 -->
+            <div class="time-filter">
+                <div class="filter-tab">今天</div>
+                <div class="filter-tab">本周</div>
+                <div class="filter-tab active">本月</div>
+                <div class="filter-tab">全部</div>
+            </div>
+            
+            <!-- 概览卡片 -->
+            <div class="overview-cards">
+                <div class="overview-card">
+                    <div class="card-icon">📊</div>
+                    <div class="card-number">24</div>
+                    <div class="card-label">总任务数</div>
+                </div>
+                <div class="overview-card">
+                    <div class="card-icon">✅</div>
+                    <div class="card-number">18</div>
+                    <div class="card-label">已完成</div>
+                </div>
+                <div class="overview-card">
+                    <div class="card-icon">⏰</div>
+                    <div class="card-number">75%</div>
+                    <div class="card-label">完成率</div>
+                </div>
+                <div class="overview-card">
+                    <div class="card-icon">🔥</div>
+                    <div class="card-number">7</div>
+                    <div class="card-label">连续天数</div>
+                </div>
+            </div>
+            
+            <!-- 分类统计 -->
+            <div class="chart-section">
+                <div class="section-title">
+                    <span class="section-icon">📈</span>
+                    分类完成情况
+                </div>
+                
+                <div class="progress-chart">
+                    <div class="progress-item">
+                        <div class="progress-label">工作</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-work" style="width: 80%;"></div>
+                        </div>
+                        <div class="progress-value">80%</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">生活</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-life" style="width: 65%;"></div>
+                        </div>
+                        <div class="progress-value">65%</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">学习</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-study" style="width: 90%;"></div>
+                        </div>
+                        <div class="progress-value">90%</div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-label">健康</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill progress-health" style="width: 45%;"></div>
+                        </div>
+                        <div class="progress-value">45%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 趋势图表 -->
+            <div class="chart-section">
+                <div class="section-title">
+                    <span class="section-icon">📊</span>
+                    完成趋势
+                </div>
+                
+                <div class="trend-chart">
+                    <div class="trend-bar" style="height: 60%;" data-value="6"></div>
+                    <div class="trend-bar" style="height: 80%;" data-value="8"></div>
+                    <div class="trend-bar" style="height: 45%;" data-value="4"></div>
+                    <div class="trend-bar" style="height: 90%;" data-value="9"></div>
+                    <div class="trend-bar" style="height: 70%;" data-value="7"></div>
+                    <div class="trend-bar" style="height: 85%;" data-value="8"></div>
+                    <div class="trend-bar" style="height: 75%;" data-value="7"></div>
+                </div>
+            </div>
+            
+            <!-- 成就系统 -->
+            <div class="achievement-section">
+                <div class="section-title">
+                    <span class="section-icon">🏆</span>
+                    成就徽章
+                </div>
+                
+                <div class="achievement-list">
+                    <div class="achievement-item unlocked">
+                        <div class="achievement-icon">🎯</div>
+                        <div class="achievement-title">目标达成</div>
+                        <div class="achievement-desc">完成10个任务</div>
+                    </div>
+                    <div class="achievement-item unlocked">
+                        <div class="achievement-icon">⚡</div>
+                        <div class="achievement-title">效率达人</div>
+                        <div class="achievement-desc">连续7天完成任务</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">🔥</div>
+                        <div class="achievement-title">坚持不懈</div>
+                        <div class="achievement-desc">连续30天完成任务</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-icon">💎</div>
+                        <div class="achievement-title">完美主义</div>
+                        <div class="achievement-desc">100%完成率</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 智能洞察 -->
+            <div class="insights-section">
+                <div class="section-title">
+                    <span class="section-icon">💡</span>
+                    智能洞察
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-icon positive">📈</div>
+                    <div class="insight-content">
+                        <div class="insight-title">效率提升</div>
+                        <div class="insight-desc">本周完成率比上周提升了15%</div>
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-icon warning">⏰</div>
+                    <div class="insight-content">
+                        <div class="insight-title">时间管理</div>
+                        <div class="insight-desc">建议在上午处理高优先级任务</div>
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-icon info">🎯</div>
+                    <div class="insight-content">
+                        <div class="insight-title">目标建议</div>
+                        <div class="insight-desc">可以适当增加健康类任务</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 时间筛选切换
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

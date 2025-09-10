@@ -1,0 +1,159 @@
+.home-page {
+  background-color: #ffffff;
+  .tag-item {
+    box-sizing: border-box;
+    border: 1rpx solid @border-color;
+    border-radius: @radius-2xl;
+    padding: @space-xs @space-md;
+  }
+  .home-content {
+    padding: 0 @space-xl @space-xl;
+    .task-overview {
+      .flex-row-center;
+      border-radius: @radius-xl;
+      box-shadow: @shadow-md;
+      height: 130rpx;
+      .overview-item {
+        .flex-column-center;
+        flex: 1;
+        .overview-item-value {
+          color: @primary-dark;
+          font-size: @font-lg;
+          font-weight: bold;
+        }
+        .overview-item-label {
+          color: @text-primary;
+          font-size: @font-sm;
+        }
+      }
+    }
+    .filter-content {
+      margin-top: @space-xl;
+      .search-input {
+        box-sizing: border-box; // border-box方便计算布局
+        width: 100%;
+        height: 120rpx;
+        border: 2rpx solid @border-color;
+        border-radius: 100rpx;
+        height: 80rpx;
+        line-height: 80rpx;
+        padding: 0 @space-xl;
+        background-color: @bg-primary;
+        font-size: @font-base;
+      }
+      .search-tabs {
+        margin-top: @space-xl;
+        .flex;
+        gap: @space-md;
+        flex-wrap: wrap;
+        .search-tab {
+          width: 120rpx;
+          height: 70rpx;
+          line-height: 70rpx;
+          text-align: center;
+          border-radius: 100rpx;
+          font-size: @font-lg;
+          border: 2rpx solid @border-color;
+          color: @text-primary;
+        }
+        .search-tab-active {
+          color: @white;
+          background-color: @primary-color;
+        }
+      }
+    }
+    .task-list {
+      .flex-column-center;
+      margin-top: @space-md;
+      .task-item {
+        .flex-column-center;
+        width: 100%;
+        height: 170rpx;
+        border-radius: @radius-lg;
+        box-shadow: @shadow-md;
+        box-sizing: border-box;
+        padding: 0 @space-lg;
+        .task-header {
+          width: 100%;
+          .flex-row-center;
+          .radio-group {
+            flex: 1;
+            text-align: left;
+            .radio-item {
+              &-text {
+                font-size: @font-lg;
+                font-weight: bold;
+              }
+            }
+          }
+          .task-priority {
+            .tag-item;
+            font-size: @font-sm;
+            font-weight: bold;
+            &.priority-high {
+              color: @error-color;
+              background-color:fade(@error-color, 20%);
+              border-color: fade(@error-color, 20%);
+            }
+            &.priority-medium {
+              color: @warning-color;
+              background-color:fade(@warning-color, 20%);
+              border-color: fade(@warning-color, 20%);
+            }
+            &.priority-low {
+              color: @success-color;
+              background-color:fade(@success-color, 20%);
+              border-color: fade(@success-color, 20%);
+            }
+          }
+        }
+        .task-meta {
+          .flex;
+          width: 100%;
+          margin-top: @space-md;
+          .task-date {
+            flex: 1;
+            text-align: left;
+            .flex;
+            align-items: center;
+            gap: @space-md;
+            .task-date-icon {
+              width: 40rpx;
+              height: 40rpx;
+            }
+            .task-date-text {
+              font-size: @font-sm;
+              color: @text-primary;
+            }
+          }
+          .task-category {
+            .tag-item;
+            font-size: @font-sm;
+            color: @text-primary;
+            background-color: @bg-primary;
+          }
+        }
+      }
+      .task-item:not(:last-child) {
+        margin-bottom: @space-lg;
+      }
+    }
+  }
+  .floating-add-btn {
+    .flex-column-center;
+    text-align: center;
+    position: fixed;
+    bottom: @space-xl;
+    right: @space-xl;
+    width: 100rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    border-radius: 50%;
+    background-color: @primary-color;
+    color: @white;
+    font-size: @font-2xl;
+    font-weight: bold;
+    box-shadow: @shadow-md;
+    cursor: pointer;
+  }
+}

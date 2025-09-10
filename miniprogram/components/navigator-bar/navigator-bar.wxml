@@ -1,0 +1,23 @@
+<view class="navigator-bar" style="height: {{height}}">
+  <!-- 左侧按钮 -->
+  <block wx:if="{{isShowBackButton}}">
+    <button
+      class="natigator-bar__left navigator-bar__button"
+      plain="{{true}}"
+      bindtap="onLeftButtonTap"
+      >
+      <image class="navigator-bar__button-icon" src="{{leftIconPath}}" />
+    </button>
+  </block>
+  <!-- 中间文案 -->
+  <view class="navigator-bar__title">
+    <view class="navigator-bar__title-text">{{title}}</view>
+    <view class="navigator-bar__title-subtext" wx:if="{{subTitle}}">{{subTitle}}</view>
+  </view>
+  <!-- 右侧按钮 -->
+  <block wx:if="{{isShowRightButton}}">
+    <view>
+      <slot name="right-icon"></slot>
+    </view>
+  </block>
+</view>

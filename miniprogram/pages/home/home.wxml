@@ -1,0 +1,67 @@
+<scroll-view class="home-page">
+  <!-- header -->
+  <navigator-bar title="智能待办清单" subTitle="让生活更有序"></navigator-bar>
+  <view class="home-content">
+    <!-- 任务概览 -->
+    <view class="task-overview">
+      <view wx:for="{{overviewData}}" wx:key="label"
+        class="overview-item">
+        <text class="overview-item-value">{{item.value}}</text>
+        <text class="overview-item-label">{{item.label}}</text>
+      </view>
+    </view>
+    <!-- 任务列表 -->
+    <view class="task-content">
+      <!-- 过滤器 -->
+      <view class="filter-content">
+        <!-- 搜索框 -->
+        <input
+          class="search-input"
+          placeholder="搜索任务..."
+          placeholder-class="search-input__placeholder"
+          model:value="{{searchTaskValue}}"
+          bindconfirm="handleSearchTaskConfirm"
+          />
+        <view class="search-tabs">
+          <view
+            wx:for="{{searchTaskTabs}}"
+            wx:key="type"
+            bindtap="handleSearchTabTap"
+            data-type="{{item.type}}"
+            class="search-tab {{searchTaskTab === item.type ? 'search-tab-active' : ''}}"
+            >
+            <text>{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+      <!-- 过滤任务列表 -->
+      <view class="task-list">
+        <view
+          wx:for="{{taskList}}"
+          wx:key="id"
+          class="task-item">
+          <view class="task-header">
+            <radio-group class="radio-group" model:value="{{item.id}}" bindchange="handleTaskChange">
+              <label class="radio-item">
+                <radio class="radio-item-radio" value="{{item.id}}" />
+                <text class="radio-item-text">{{item.text}}</text>
+              </label>
+            </radio-group>
+            <view class="task-priority {{item.priorityClass}}">{{item.priorityLabel}}</view>
+          </view>
+          <view class="task-meta">
+            <!-- 已完成、未完成的时间 -->
+            <view class="task-date">
+              <image src="/assets/images/date.png" class="task-date-icon" />
+              <text class="task-date-text">{{item.date}}</text>
+            </view>
+            <view class="task-category">{{item.categoryLabel}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <button class="floating-add-btn" bindtap="handleAddTask">
+    <text>+</text>
+  </button>
+</scroll-view>

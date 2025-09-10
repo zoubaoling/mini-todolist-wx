@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 15px;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        
+        .user-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-level {
+            font-size: 14px;
+            opacity: 0.9;
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .stats-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            text-align: center;
+        }
+        
+        .stat-item {
+            padding: 15px 0;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .menu-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .menu-icon.profile {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .menu-icon.settings {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .menu-icon.backup {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .menu-icon.help {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .menu-icon.about {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+        
+        .menu-content {
+            flex: 1;
+        }
+        
+        .menu-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 2px;
+        }
+        
+        .menu-desc {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .menu-arrow {
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .badge {
+            background: #ff4757;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+        
+        .settings-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-content {
+            display: flex;
+            align-items: center;
+        }
+        
+        .setting-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        
+        .setting-icon.notification {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .setting-icon.theme {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .setting-icon.sync {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+        
+        .setting-text {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background: #ccc;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background: #667eea;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+        
+        .logout-section {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .logout-btn {
+            background: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #ffcdd2;
+        }
+        
+        .version-info {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部用户信息 -->
+        <div class="header">
+            <div class="user-avatar">👤</div>
+            <div class="user-name">张三</div>
+            <div class="user-level">效率达人 Lv.5</div>
+        </div>
+        
+        <div class="content">
+            <!-- 用户统计 -->
+            <div class="stats-section">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">总任务</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">128</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">82%</div>
+                        <div class="stat-label">完成率</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 功能菜单 -->
+            <div class="menu-section">
+                <div class="menu-item">
+                    <div class="menu-icon profile">👤</div>
+                    <div class="menu-content">
+                        <div class="menu-title">个人资料</div>
+                        <div class="menu-desc">编辑个人信息和头像</div>
+                    </div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon settings">⚙️</div>
+                    <div class="menu-content">
+                        <div class="menu-title">应用设置</div>
+                        <div class="menu-desc">个性化设置和偏好</div>
+                    </div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon backup">☁️</div>
+                    <div class="menu-content">
+                        <div class="menu-title">数据备份</div>
+                        <div class="menu-desc">云端同步和备份</div>
+                    </div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon help">❓</div>
+                    <div class="menu-content">
+                        <div class="menu-title">帮助与反馈</div>
+                        <div class="menu-desc">使用帮助和问题反馈</div>
+                    </div>
+                    <div class="menu-arrow">›</div>
+                </div>
+                
+                <div class="menu-item">
+                    <div class="menu-icon about">ℹ️</div>
+                    <div class="menu-content">
+                        <div class="menu-title">关于我们</div>
+                        <div class="menu-desc">版本信息和更新日志</div>
+                    </div>
+                    <div class="menu-arrow">›</div>
+                </div>
+            </div>
+            
+            <!-- 设置选项 -->
+            <div class="settings-section">
+                <div class="setting-item">
+                    <div class="setting-content">
+                        <div class="setting-icon notification">🔔</div>
+                        <div class="setting-text">推送通知</div>
+                    </div>
+                    <div class="toggle-switch active"></div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-content">
+                        <div class="setting-icon theme">🎨</div>
+                        <div class="setting-text">深色模式</div>
+                    </div>
+                    <div class="toggle-switch"></div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-content">
+                        <div class="setting-icon sync">🔄</div>
+                        <div class="setting-text">自动同步</div>
+                    </div>
+                    <div class="toggle-switch active"></div>
+                </div>
+            </div>
+            
+            <!-- 退出登录 -->
+            <div class="logout-section">
+                <button class="logout-btn">退出登录</button>
+            </div>
+            
+            <!-- 版本信息 -->
+            <div class="version-info">
+                <div>智能待办清单 v1.0.0</div>
+                <div style="margin-top: 5px;">© 2024 All Rights Reserved</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 设置开关切换
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+        
+        // 菜单项点击
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const title = this.querySelector('.menu-title').textContent;
+                alert(`点击了：${title}`);
+            });
+        });
+    </script>
+</body>
+</html>
