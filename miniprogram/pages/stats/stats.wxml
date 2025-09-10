@@ -33,10 +33,23 @@
       </view>
     </view>
     <!-- 分类完成情况 -->
-    <view class="stats-category">
-      <view class="stats-category-item" wx:for="{{taskCategoryList}}" wx:key="type">
-        <view class="stats-category-item-label">{{item.label}}</view>
-        <view class="stats-category-item-value">{{item.percentageText}}</view>
+    <view class="stats-category card-box">
+      <view class="stats-category-header">
+        <image class="stats-category-icon" src="/assets/images/stats.png" />
+        <text class="stats-category-title">分类完成情况</text>
+      </view>
+      <view class="stats-category-content">
+        <view class="stats-category-progress"
+          wx:for="{{taskCategoryList}}"
+          wx:key="type"
+        >
+          <progress-bar
+            label="{{item.label}}"
+            percentage="{{item.percentage}}"
+            gradient="{{item.gradient}}"
+            animated="{{item.animated}}"
+          />
+        </view>
       </view>
     </view>
   </view>

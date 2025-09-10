@@ -1,0 +1,70 @@
+.progress-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: @space-lg;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  &__label {
+    width: 80rpx;
+    flex-shrink: 0;
+    // 字体大小和颜色通过内联样式控制
+  }
+  
+  &__value {
+    width: 80rpx;
+    text-align: right;
+    font-weight: 500;
+    flex-shrink: 0;
+    // 字体大小和颜色通过内联样式控制
+  }
+  
+  &__container {
+    flex: 1;
+    border-radius: 8rpx;
+    margin: 0 @space-md;
+    overflow: hidden;
+    position: relative;
+    // 高度和背景色通过内联样式控制
+  }
+  
+  &__fill {
+    height: 100%;
+    border-radius: 8rpx;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    
+    &.animated {
+      opacity: 1;
+      transform: scaleX(1);
+      transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+        animation: shimmer 2s infinite;
+        animation-delay: 0.5s;
+      }
+    }
+  }
+}
+
+// 进度条动画
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

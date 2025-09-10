@@ -29,6 +29,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: @space-xl;
+      margin-bottom: @space-2xl;
       .stats-overview-item {
         .flex-column-center;
         &-label {
@@ -38,6 +39,28 @@
         &-value {
           margin-top: @space-md;
           color: @text-primary;
+        }
+      }
+    }
+    .stats-category {
+      &-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: @space-xl;
+        .stats-category-icon {
+          width: 32rpx;
+          height: 32rpx;
+          margin-right: @space-md;
+        }
+        .stats-category-title {
+          font-size: @font-lg;
+          font-weight: 600;
+          color: @text-primary;
+        }
+      }
+      &-content {
+        .stats-category-progress {
+          margin-bottom: @space-md;
         }
       }
     }

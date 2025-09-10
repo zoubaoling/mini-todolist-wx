@@ -1,0 +1,19 @@
+<view class="progress-bar">
+  <view 
+    class="progress-bar__label"
+    style="font-size: {{labelFontSize}}; color: {{labelColor}};"
+  >{{label}}</view>
+  <view 
+    class="progress-bar__container"
+    style="height: {{height}}; background-color: {{backgroundColor}};"
+  >
+    <view 
+      class="progress-bar__fill {{animated ? 'animated' : ''}}"
+      style="background: {{gradient}}; width: {{animated ? percentage : 0}}%;"
+    ></view>
+  </view>
+  <view 
+    class="progress-bar__value"
+    style="font-size: {{valueFontSize}}; color: {{valueColor}};"
+  >{{percentageText}}</view>
+</view>

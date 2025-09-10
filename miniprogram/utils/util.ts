@@ -17,3 +17,10 @@ const formatNumber = (n: number) => {
   const s = n.toString()
   return s[1] ? s : '0' + s
 }
+export const setDataAndWait = (page: any, data: any): Promise<void> => {
+  return new Promise((resolve) => {
+    page.setData(data, () => {
+      wx.nextTick(resolve)
+    })
+  })
+}

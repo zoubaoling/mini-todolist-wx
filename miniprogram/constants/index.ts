@@ -8,32 +8,38 @@ export const TASK_CATEGORY = {
   [TaskCategory.WORK]: {
     type: 'WORK',
     label: '工作',
-    color: '#667eea'
+    color: '#667eea',
+    gradient: 'linear-gradient(90deg, #667eea 0%, #764ba2 100%)'
   },
   [TaskCategory.LIFE]: {
     type: 'LIFE',
     label: '生活',
-    color: '#ff6b6b'
+    color: '#ff6b6b',
+    gradient: 'linear-gradient(90deg, #ff6b6b 0%, #ffa726 100%)'
   },
   [TaskCategory.LEARN]: {
     type: 'LEARN',
     label: '学习',
-    color: '#66bb6a'
+    color: '#66bb6a',
+    gradient: 'linear-gradient(90deg, #66bb6a 0%, #4caf50 100%)'
   },
   [TaskCategory.HEALTH]: {
     type: 'HEALTH',
     label: '健康',
-    color: '#ff9800'
+    color: '#ff9800',
+    gradient: 'linear-gradient(90deg, #ff9800 0%, #ffc107 100%)'
   },
   [TaskCategory.ENTERTAINMENT]: {
     type: 'ENTERTAINMENT',
     label: '娱乐',
-    color: '#9c27b0'
+    color: '#9c27b0',
+    gradient: 'linear-gradient(90deg, #9c27b0 0%, #e91e63 100%)'
   },
   [TaskCategory.SHOPPING]: {
     type: 'SHOPPING',
     label: '购物',
-    color: '#e91e63'
+    color: '#e91e63',
+    gradient: 'linear-gradient(90deg, #e91e63 0%, #f06292 100%)'
   }
 }
 // 任务优先级
