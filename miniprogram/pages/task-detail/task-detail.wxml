@@ -1,0 +1,43 @@
+<scroll-view class="task-detail-page">
+  <navigator-bar
+    title="任务详情"
+    isShowBackButton="{{true}}"
+    barType="back"
+    bind:left-button-tap="handleBack">
+  </navigator-bar>
+  <!-- 概览信息 -->
+  <view class="task-detail-content">
+    <view class="task-detail-overview card-box">
+      <view class="task-detail-overview-title">{{taskDetail.text}}</view>
+      <view class="task-detail-overview-status">
+        <view class="task-priority task-tag {{taskDetail.className.priority}}">{{taskDetail.priorityLabel}}</view>
+        <view class="task-category task-tag">{{taskDetail.categoryLabel}}</view>
+        <view class="task-status task-tag {{taskDetail.className.status}}">{{taskDetail.statusLabel}}</view>
+      </view>
+      <view class="task-detail-overview-desc">{{taskDetail.desc}}</view>
+    </view>
+    <!-- 任务信息 -->
+    <view class="task-detail-info card-box">
+      <view class="task-detail-info-title">任务信息</view>
+      <view class="task-detail-info-content">
+        <view class="task-detail-info-content-item">
+          <view class="task-detail-info-content-item-label">创建时间</view>
+          <view class="task-detail-info-content-item-value">{{taskDetail.createTime}}</view>
+        </view>
+        <view class="task-detail-info-content-item">
+          <view class="task-detail-info-content-item-label">截止时间</view>
+          <view class="task-detail-info-content-item-value">{{taskDetail.date}}</view>
+        </view>
+        <view class="task-detail-info-content-item">
+          <view class="task-detail-info-content-item-label">提醒设置</view>
+          <view class="task-detail-info-content-item-value">{{taskDetail.reminder}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="task-detail-actions">
+      <button class="action-button action-button-complete">标记完成</button>
+      <button class="action-button action-button-edit">编辑任务</button>
+      <button class="action-button action-button-delete">删除任务</button>
+    </view>
+  </view>
+</scroll-view>

@@ -19,8 +19,11 @@ export enum TaskPriority {
 }
 export interface TaskItem {
   id: number,
-  text: string
-  category: keyof typeof TaskCategory
+  text: string,
+  desc?: string,
+  category: keyof typeof TaskCategory,
+  isReminder: boolean,
+  createTime: string,
   date: string
   priority: keyof typeof TaskPriority
   status: keyof typeof TaskStatus,

@@ -3,7 +3,8 @@
     "pages/home/home",
     "pages/stats/stats",
     "pages/profile/profile",
-    "pages/add-task/add-task"
+    "pages/add-task/add-task",
+    "pages/task-detail/task-detail"
   ],
   "usingComponents": {
     "navigator-bar": "/components/navigator-bar/navigator-bar"

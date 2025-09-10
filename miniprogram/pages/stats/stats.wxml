@@ -1,1 +1,43 @@
-<view>stats</view>
+<view class="stats-page">
+  <navigator-bar title="统计中心" subTitle="了解你的效率趋势"></navigator-bar>
+  <view class="stats-content">
+    <view class="stats-filters card-box">
+      <view
+        class="stats-filters-item  {{filterDimension === item.value ? 'active' : ''}}"
+        wx:for="{{statsDimension}}"
+        wx:key="value"
+        wx:for-item="item"
+        data-value="{{item.value}}"
+        bindtap="handleClickFilter"
+        >
+        <view class="stats-filters-item-label">{{item.label}}</view>
+      </view>
+    </view>
+    <!-- 统计概览 -->
+    <view class="stats-overview">
+      <view class="stats-overview-item card-box">
+        <view class="stats-overview-item-label">{{taskStats.total}}</view>
+        <view class="stats-overview-item-value">总任务数</view>
+      </view>
+      <view class="stats-overview-item card-box">
+        <view class="stats-overview-item-label">{{taskStats.completed}}</view>
+        <view class="stats-overview-item-value">已完成</view>
+      </view>
+      <view class="stats-overview-item card-box">
+        <view class="stats-overview-item-label">{{taskStats.completionRate}}</view>
+        <view class="stats-overview-item-value">完成率</view>
+      </view>
+      <view class="stats-overview-item card-box">
+        <view class="stats-overview-item-label">{{taskStats.consecutiveDays}}</view>
+        <view class="stats-overview-item-value">连续天数</view>
+      </view>
+    </view>
+    <!-- 分类完成情况 -->
+    <view class="stats-category">
+      <view class="stats-category-item" wx:for="{{taskCategoryList}}" wx:key="type">
+        <view class="stats-category-item-label">{{item.label}}</view>
+        <view class="stats-category-item-value">{{item.percentageText}}</view>
+      </view>
+    </view>
+  </view>
+</view>

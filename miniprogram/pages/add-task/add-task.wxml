@@ -4,7 +4,7 @@
     isShowBackButton="{{true}}"
     isShowRightButton="{{true}}"
     barType="back" 
-    bind:right-button-tap="handleBack">
+    bind:left-button-tap="handleBack">
     <button slot="right-icon" class="navigator-bar__button_right" plain="{{true}}" bindtap="handleSaveTask">
       <text>保存</text>
     </button>
@@ -53,8 +53,8 @@
     </view>
     <!-- 分类标签 -->
     <view class="add-task-page__content-category">
-      <view class="add-task-page__content-priority-title">
-        <text>优先级</text>
+      <view class="add-task-page__content-category-title">
+        <text>分类标签</text>
       </view>
       <view class="add-task-page__content-category-content">
         <view
@@ -75,13 +75,27 @@
         <view class="add-task-page__content-time-content-date">
           <text class="add-task-page__content-time-content-date-title">截止日期</text>
         </view>
-        <view class="add-task-page__content-time-content-picker">
+        <view class="add-task-page__content-time-content-datetime">
           <picker
+            class="date-picker"
             mode="date"
+            value="{{selectedDate}}"
+            bindchange="onDateChange"
           >
-            <view class="picker-display">
-              <text>选择日期</text>
-              <text class="picker-arrow">></text>
+            <view class="datetime-picker">
+              <text class="datetime-placeholder">{{selectedDate || '年 / 月 / 日'}}</text>
+              <image class="datetime-icon" src="/assets/images/date-dark.png" />
+            </view>
+          </picker>
+          <picker
+            class="time-picker"
+            mode="time"
+            value="{{selectedTime}}"
+            bindchange="onTimeChange"
+          >
+            <view class="datetime-picker">
+              <text class="datetime-placeholder">{{selectedTime || '--:--'}}</text>
+              <image class="datetime-icon" src="/assets/images/time.png" />
             </view>
           </picker>
         </view>
@@ -90,7 +104,11 @@
           <view class="add-task-page__content-time-content-reminder-title">提醒设置</view>
           <view class="add-task-page__content-time-content-reminder-content">
             <text class="add-task-page__content-time-content-reminder-content-label">开启提醒</text>
-            <switch class="add-task-page__content-time-content-reminder-switch" />
+            <switch 
+              class="add-task-page__content-time-content-reminder-switch" 
+              checked="{{isReminderEnabled}}"
+              bindchange="onReminderToggle"
+            />
           </view>
         </view>
       </view>

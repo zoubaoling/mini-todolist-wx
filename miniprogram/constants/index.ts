@@ -1,4 +1,4 @@
-import { TaskCategory, TaskPriority } from '../types/index'
+import { TaskCategory, TaskPriority, TaskStatus } from '../types/index'
 
 // 任务状态
 
@@ -74,4 +74,28 @@ export const TASK_MAPS = {
     'ENTERTAINMENT': TaskCategory.ENTERTAINMENT,
     'SHOPPING': TaskCategory.SHOPPING
   },
+  status: {
+    'DOING': TaskStatus.DOING,
+    'COMPLETED': TaskStatus.COMPLETED,
+    'TOTAL': TaskStatus.TOTAL
+  }
 }
+// 统计维度
+export const STATS_DIMENSION = [
+  {
+    label: '今天',
+    value: 'DAY'
+  },
+  {
+    label: '本周',
+    value: 'WEEK'
+  },
+  {
+    label: '本月',
+    value: 'MONTH'
+  },
+  {
+    label: '全部',
+    value: 'ALL'
+  }
+]

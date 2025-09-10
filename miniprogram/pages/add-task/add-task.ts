@@ -2,7 +2,10 @@ import { TASK_PRIORITY, TASK_CATEGORY } from "../../constants/index"
 Page({
   data: {
     priorityList: [] as Array<{type: string, desc: string, label: string, class: string}>,
-    selectedCategory: ''
+    selectedCategory: '',
+    selectedDate: '',
+    selectedTime: '',
+    isReminderEnabled: false
   },
   onLoad() {
     this.initPriorityList()
@@ -13,6 +16,21 @@ Page({
   },
   handleSaveTask() {
     console.log('save task')
+  },
+  onDateChange(e: any) {
+    this.setData({
+      selectedDate: e.detail.value
+    })
+  },
+  onTimeChange(e: any) {
+    this.setData({
+      selectedTime: e.detail.value
+    })
+  },
+  onReminderToggle(e: any) {
+    this.setData({
+      isReminderEnabled: e.detail.value
+    })
   },
   initPriorityList () {
     const list = Object.values(TASK_PRIORITY)

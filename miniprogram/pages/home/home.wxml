@@ -39,7 +39,10 @@
         <view
           wx:for="{{taskList}}"
           wx:key="id"
-          class="task-item">
+          class="task-item"
+          bindtap="handleTaskTap"
+          data-id="{{item.id}}"
+          >
           <view class="task-header">
             <radio-group class="radio-group" model:value="{{item.id}}" bindchange="handleTaskChange">
               <label class="radio-item">

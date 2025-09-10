@@ -70,5 +70,11 @@ Page({
     wx.navigateTo({
       url: '/pages/add-task/add-task'
     })
+  },
+  handleTaskTap (e: any) {
+    const { id } = e.currentTarget.dataset
+    wx.navigateTo({
+      url: `/pages/task-detail/task-detail?id=${id}`
+    })
   }
 })

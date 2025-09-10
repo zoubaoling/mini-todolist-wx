@@ -1,0 +1,103 @@
+.priority-high {
+  color: @error-color !important;
+  background-color: fade(@error-color, 20%) !important;
+}
+.priority-medium {
+  background-color: fade(@warning-color, 20%) !important;
+  color: @warning-color !important;
+}
+.priority-low {
+  background-color: fade(@success-color, 20%) !important;
+  color: @success-color !important;
+}
+.status-doing {
+  background-color: fade(@primary-color, 20%) !important;
+  color: @primary-color !important;
+}
+.status-completed {
+  background-color: fade(@success-color, 20%) !important;
+  color: @success-color !important;
+}
+.task-detail-page {
+  background-color: @white;
+  position: relative;
+  height: 100vh;
+  .task-detail-content {
+    padding: @space-2xl @space-xl;
+    .task-detail-overview {
+      &-title {
+        font-size: @font-xl;
+        font-weight: 500;
+        margin-bottom: @space-md;
+      }
+      &-status {
+        display: flex;
+        align-items: center;
+        gap: @space-md;
+        margin-bottom: @space-md;
+        .task-tag {
+          box-sizing: border-box;
+          border-radius: @radius-full;
+          background-color: @bg-primary;
+          padding: @space-md @space-xl;
+          font-size: @font-base;
+          color: @text-primary;
+        }
+      }
+      &-desc {
+        font-size: @font-base;
+        color: @text-secondary;
+      }
+    }
+    .task-detail-info {
+      &-title {
+        font-size: @font-xl;
+        font-weight: 500;
+        margin-bottom: @space-2xl;
+      }
+      &-content {
+        &-item {
+          .flex;
+          justify-content: space-between;
+          margin-bottom: @space-md;
+          border-bottom: 1rpx solid @border-color;
+          padding: @space-md 0;
+          &-label {
+            font-size: @font-base;
+            color: @text-secondary;
+          }
+          &-value {
+            font-size: @font-base;
+            color: @text-primary;
+          }
+        }
+      }
+    }
+    .task-detail-actions {
+      position: absolute;
+      bottom: @space-2xl;
+      left: @space-xl;
+      right: @space-xl;
+      .flex;
+      gap: @space-lg;
+      .action-button {
+        flex: 1;
+        .flex-row-center;
+        height: 90rpx;
+        padding: @space-md @space-xl;
+        border-radius: @radius-2xl;
+        font-size: @font-base;
+        color: @text-primary;
+        border-color: @text-primary;
+      }
+      .action-button-complete {
+        color: @white;
+        background: @primary-gradient;
+      }
+      .action-button-delete {
+        color: @error-color;
+        background-color: fade(@error-color, 20%);
+      }
+    }
+  }
+}

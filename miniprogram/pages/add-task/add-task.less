@@ -1,13 +1,6 @@
 .add-task-page {
   position: relative;
   background-color: @white;
-  .card-box {
-    border: 1rpx solid @border-color;
-    box-shadow: @shadow-md;
-    border-radius: @radius-2xl;
-    padding: @space-2xl @space-xl;
-    margin-bottom: @space-lg;
-  }
   .card-box-title {
     font-size: @font-xl;
     font-weight: 500;
@@ -21,10 +14,13 @@
         margin-bottom: @space-md;
       }
       &-content {
-        &-item {
-          margin-bottom: @space-lg;
-          &-label {
-          }
+          &-item {
+            margin-bottom: @space-lg;
+            &-label {
+              font-size: @font-base;
+              font-weight: 500;
+              color: @text-primary;
+            }
           &-input {
             height: 80rpx;
             line-height: 80rpx;
@@ -112,9 +108,49 @@
         margin-bottom: @space-md;
       }
       &-content {
+        &-date {
+          margin-bottom: @space-md;
+          &-title {
+            font-size: @font-base;
+            font-weight: 500;
+          }
+        }
+        &-datetime {
+          display: flex;
+          gap: @space-xl;
+          margin-bottom: @space-lg;
+          .date-picker {
+            flex: 2;
+          }
+          .time-picker {
+            flex: 1;
+          }
+          .datetime-picker {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80rpx;
+            padding: 0 @space-md;
+            background-color: @bg-primary;
+            border: 1rpx solid @border-color;
+            border-radius: @radius-lg;
+            .datetime-placeholder {
+              color: @text-primary;
+              font-size: @font-base;
+            }
+            .datetime-icon {
+              width: 32rpx;
+              height: 32rpx;
+            }
+          }
+        }
         &-reminder {
           margin-top: @space-lg;
           &-title {
+            font-size: @font-base;
+            font-weight: 500;
+            margin-bottom: @space-md;
           }
           &-content {
             background-color: @bg-primary;
