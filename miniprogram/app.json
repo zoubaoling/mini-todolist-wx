@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/login/login",
     "pages/home/home",
     "pages/stats/stats",
     "pages/profile/profile",
@@ -7,7 +8,9 @@
     "pages/task-detail/task-detail"
   ],
   "usingComponents": {
-    "navigator-bar": "/components/navigator-bar/navigator-bar"
+    "navigator-bar": "/components/navigator-bar/navigator-bar",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-toast": "tdesign-miniprogram/toast/toast"
   },
   "window": {
     "navigationBarTextStyle": "black",

@@ -1,0 +1,24 @@
+<view class="login-page">
+  <navigator-bar title="智能待办清单" subTitle="让生活更有序，让工作更高效"></navigator-bar>
+  <view class="login-content">
+    <view class="login-welcome flex-column-center">
+      <view class="login-welcome-title">
+        欢迎使用
+      </view>
+      <view class="login-welcome-desc">
+        使用微信账号登陆，您的数据将保存在云端，多设备同步。
+      </view>
+    </view>
+      <t-button class="login-button flex-row-center" bindtap="onLogin">
+        <!-- <img src="" alt=""> -->
+        <text>微信账号登陆</text>
+      </t-button>
+  </view>
+  <view class="login-welcome-privacy flex-column-center">
+    <text class="privacy-title">隐私说明</text>
+    <text class="privacy-desc">
+      我们仅获取您的微信昵称和头像，您的任务数据仅用于提供服务，不会用于其他用途
+    </text>
+  </view>
+</view>
+<t-toast id="t-toast" />

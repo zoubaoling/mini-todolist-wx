@@ -23,8 +23,11 @@
   },
   "include": [
     "./**/*.ts"
-  ],
+, "cloudfunctions/userLogin/index.js"  ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "paths": {
+    "tdesign-miniprogram/*": ["./miniprogram/miniprogram_npm/tdesign-miniprogram/*"]
+  }
 }
