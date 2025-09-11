@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信登录 - 智能待办清单</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 375px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .app-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .app-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .welcome-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: #07c160;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .login-button:hover {
+            background: #06ad56;
+            transform: translateY(-2px);
+        }
+        
+        .login-button:active {
+            transform: translateY(0);
+        }
+        
+        .wechat-icon {
+            font-size: 20px;
+        }
+        
+        .features {
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .privacy-notice {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #999;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #07c160;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="app-icon">📝</div>
+            <h1 class="app-title">智能待办清单</h1>
+            <p class="app-subtitle">让生活更有序，让工作更高效</p>
+        </div>
+        
+        <div class="content">
+            <h2 class="welcome-text">欢迎使用</h2>
+            <p class="description">
+                使用微信账号登录，享受个性化的任务管理体验。<br>
+                您的数据将安全保存在云端，多设备同步。
+            </p>
+            
+            <button class="login-button" onclick="handleWechatLogin()">
+                <span class="wechat-icon">💬</span>
+                微信快速登录
+            </button>
+            
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">正在登录...</div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>智能任务分类和优先级管理</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>多设备数据同步</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>详细的统计分析和进度跟踪</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <span>提醒通知和截止日期管理</span>
+                </div>
+            </div>
+            
+            <div class="privacy-notice">
+                <strong>隐私说明：</strong><br>
+                我们仅获取您的微信昵称和头像，用于个性化体验。<br>
+                您的任务数据仅用于提供服务，不会用于其他用途。
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function handleWechatLogin() {
+            const button = document.querySelector('.login-button');
+            const loading = document.getElementById('loading');
+            
+            // 显示加载状态
+            button.style.display = 'none';
+            loading.style.display = 'block';
+            
+            // 模拟微信登录过程
+            setTimeout(() => {
+                // 模拟登录成功
+                alert('登录成功！正在跳转到首页...');
+                // 实际项目中这里会跳转到首页
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+        
+        // 检查是否已登录
+        window.onload = function() {
+            // 实际项目中这里会检查登录状态
+            // 如果已登录，直接跳转到首页
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = 'index.html';
+            }
+        };
+    </script>
+</body>
+</html>

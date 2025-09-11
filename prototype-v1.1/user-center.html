@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 15px;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        
+        .user-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .user-id {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-text {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .menu-arrow {
+            color: #ccc;
+            font-size: 12px;
+        }
+        
+        .menu-badge {
+            background: #ff6b6b;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-right: 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .logout-section {
+            padding: 20px;
+        }
+        
+        .logout-btn {
+            width: 100%;
+            padding: 15px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #ff5252;
+        }
+        
+        .login-prompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .login-modal {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            max-width: 300px;
+            margin: 0 20px;
+        }
+        
+        .login-modal h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .login-modal p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .login-modal-btn {
+            background: #07c160;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .cancel-btn {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 375px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .nav-item.active {
+            color: #667eea;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        
+        .nav-label {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="user-avatar" id="userAvatar">👤</div>
+            <div class="user-name" id="userName">用户昵称</div>
+            <div class="user-id" id="userId">ID: 123456789</div>
+        </div>
+        
+        <div class="content">
+            <!-- 数据统计 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">总任务数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">89</div>
+                    <div class="stat-label">已完成</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">23</div>
+                    <div class="stat-label">连续天数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">57%</div>
+                    <div class="stat-label">完成率</div>
+                </div>
+            </div>
+            
+            <!-- 功能菜单 -->
+            <div class="section">
+                <div class="section-title">我的数据</div>
+                <a href="statistics.html" class="menu-item">
+                    <div class="menu-icon">📊</div>
+                    <div class="menu-text">数据统计</div>
+                    <div class="menu-arrow">></div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">📁</div>
+                    <div class="menu-text">数据备份</div>
+                    <div class="menu-arrow">></div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">🔄</div>
+                    <div class="menu-text">数据同步</div>
+                    <div class="menu-arrow">></div>
+                </a>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">设置</div>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">🔔</div>
+                    <div class="menu-text">提醒设置</div>
+                    <div class="menu-arrow">></div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">🎨</div>
+                    <div class="menu-text">主题设置</div>
+                    <div class="menu-arrow">></div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">🔒</div>
+                    <div class="menu-text">隐私设置</div>
+                    <div class="menu-arrow">></div>
+                </a>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">帮助与反馈</div>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">❓</div>
+                    <div class="menu-text">使用帮助</div>
+                    <div class="menu-arrow">></div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">💬</div>
+                    <div class="menu-text">意见反馈</div>
+                    <div class="menu-arrow">></div>
+                </a>
+                <a href="#" class="menu-item">
+                    <div class="menu-icon">ℹ️</div>
+                    <div class="menu-text">关于我们</div>
+                    <div class="menu-arrow">></div>
+                </a>
+            </div>
+            
+            <!-- 退出登录 -->
+            <div class="logout-section">
+                <button class="logout-btn" onclick="handleLogout()">
+                    退出登录
+                </button>
+            </div>
+        </div>
+        
+        <div class="bottom-nav">
+            <a href="index.html" class="nav-item">
+                <div class="nav-icon">📋</div>
+                <div class="nav-label">首页</div>
+            </a>
+            <a href="add-task.html" class="nav-item">
+                <div class="nav-icon">➕</div>
+                <div class="nav-label">添加</div>
+            </a>
+            <a href="statistics.html" class="nav-item">
+                <div class="nav-icon">📊</div>
+                <div class="nav-label">统计</div>
+            </a>
+            <a href="user-center.html" class="nav-item active">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">我的</div>
+            </a>
+        </div>
+    </div>
+    
+    <!-- 登录提示弹窗 -->
+    <div class="login-prompt" id="loginPrompt" style="display: none;">
+        <div class="login-modal">
+            <h3>需要登录</h3>
+            <p>请先登录以查看您的个人数据</p>
+            <button class="login-modal-btn" onclick="goToLogin()">去登录</button>
+            <button class="cancel-btn" onclick="closeLoginPrompt()">取消</button>
+        </div>
+    </div>
+    
+    <script>
+        // 检查登录状态
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userInfo = localStorage.getItem('userInfo');
+            
+            if (isLoggedIn === 'true' && userInfo) {
+                const user = JSON.parse(userInfo);
+                document.getElementById('userAvatar').textContent = user.avatar || '👤';
+                document.getElementById('userName').textContent = user.nickName || '用户昵称';
+                document.getElementById('userId').textContent = `ID: ${user.id || '123456789'}`;
+            } else {
+                // 未登录，显示登录提示
+                document.getElementById('loginPrompt').style.display = 'flex';
+            }
+        }
+        
+        // 退出登录
+        function handleLogout() {
+            if (confirm('确定要退出登录吗？退出后需要重新登录才能查看您的数据。')) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userInfo');
+                alert('已退出登录');
+                window.location.href = 'login.html';
+            }
+        }
+        
+        // 跳转到登录页
+        function goToLogin() {
+            window.location.href = 'login.html';
+        }
+        
+        // 关闭登录提示
+        function closeLoginPrompt() {
+            document.getElementById('loginPrompt').style.display = 'none';
+        }
+        
+        // 页面加载时检查登录状态
+        window.onload = function() {
+            checkLoginStatus();
+        };
+    </script>
+</body>
+</html>

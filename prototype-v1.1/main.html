@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能待办清单小程序 v1.1 - 原型展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .prototype-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .prototype-item {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .prototype-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .prototype-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .prototype-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .prototype-desc {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .prototype-frame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            background: #f5f5f5;
+        }
+        
+        .feature-highlight {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .feature-highlight h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .feature-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .feature-item h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .feature-item p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        
+        .login-flow {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            color: white;
+        }
+        
+        .login-flow h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .flow-step {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .flow-step-number {
+            width: 30px;
+            height: 30px;
+            background: #07c160;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .flow-step-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .flow-step-desc {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .flow-arrow {
+            color: rgba(255,255,255,0.6);
+            font-size: 20px;
+            margin: 0 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .prototype-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .flow-steps {
+                flex-direction: column;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>智能待办清单小程序</h1>
+            <p>微信登录版本 - 完整的用户认证和数据隔离系统</p>
+            <div class="version-badge">v1.1</div>
+        </div>
+        
+        <!-- 新功能亮点 -->
+        <div class="feature-highlight">
+            <h2>🆕 v1.1 版本新功能</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h3>🔐 微信登录系统</h3>
+                    <p>用户需要通过微信账号登录才能使用应用，确保数据安全和用户身份验证</p>
+                </div>
+                <div class="feature-item">
+                    <h3>👤 用户数据隔离</h3>
+                    <p>每个用户只能查看和管理自己的任务数据，实现完全的数据隔离</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔄 登录状态管理</h3>
+                    <p>自动检查登录状态，未登录时显示友好的登录提示，提升用户体验</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🚪 安全退出功能</h3>
+                    <p>用户可以安全退出登录，退出时自动清除本地数据，保护隐私</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 登录流程说明 -->
+        <div class="login-flow">
+            <h2>🔐 登录流程设计</h2>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="flow-step-number">1</div>
+                    <div class="flow-step-title">访问应用</div>
+                    <div class="flow-step-desc">用户打开小程序</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-number">2</div>
+                    <div class="flow-step-title">检查登录</div>
+                    <div class="flow-step-desc">自动检查登录状态</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-number">3</div>
+                    <div class="flow-step-title">微信登录</div>
+                    <div class="flow-step-desc">未登录跳转登录页</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="flow-step-number">4</div>
+                    <div class="flow-step-title">使用功能</div>
+                    <div class="flow-step-desc">登录后正常使用</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 原型展示 -->
+        <div class="prototype-grid">
+            <!-- 登录页面 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">🔐 登录页面</div>
+                    <div class="prototype-desc">微信登录入口，应用介绍和功能介绍</div>
+                </div>
+                <iframe src="login.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 首页 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">🏠 首页</div>
+                    <div class="prototype-desc">任务列表，用户信息展示，登录状态管理</div>
+                </div>
+                <iframe src="index.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 添加任务 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">➕ 添加任务</div>
+                    <div class="prototype-desc">创建新任务，登录状态检查</div>
+                </div>
+                <iframe src="add-task.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 任务详情 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">📋 任务详情</div>
+                    <div class="prototype-desc">查看和编辑任务详情，登录状态检查</div>
+                </div>
+                <iframe src="task-detail.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 统计中心 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">📊 统计中心</div>
+                    <div class="prototype-desc">数据统计和分析，登录状态检查</div>
+                </div>
+                <iframe src="statistics.html" class="prototype-frame"></iframe>
+            </div>
+            
+            <!-- 个人中心 -->
+            <div class="prototype-item">
+                <div class="prototype-header">
+                    <div class="prototype-title">👤 个人中心</div>
+                    <div class="prototype-desc">用户信息，设置选项，退出登录功能</div>
+                </div>
+                <iframe src="user-center.html" class="prototype-frame"></iframe>
+            </div>
+        </div>
+        
+        <!-- 技术特性说明 -->
+        <div class="feature-highlight">
+            <h2>🛠️ 技术实现特性</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h3>🔒 数据安全</h3>
+                    <p>使用localStorage管理登录状态，用户数据本地存储，退出时自动清除</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🎨 用户体验</h3>
+                    <p>统一的登录提示弹窗，美观的登录页面设计，流畅的交互体验</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📱 响应式设计</h3>
+                    <p>适配不同屏幕尺寸，移动端优先的设计理念</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🔄 状态管理</h3>
+                    <p>完善的登录状态检查机制，确保功能访问的安全性</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
