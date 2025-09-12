@@ -20,13 +20,15 @@
           placeholder="搜索任务..."
           placeholder-class="search-input__placeholder"
           model:value="{{searchTaskValue}}"
-          bindconfirm="handleSearchTaskConfirm"
+          bind:confirm="handleSearchTask"
+          bind:input="debounceSearchTask"
+          confirm-type="search"
           />
         <view class="search-tabs">
           <view
             wx:for="{{searchTaskTabs}}"
             wx:key="type"
-            bindtap="handleSearchTabTap"
+            bind:tap="handleSearchTabTap"
             data-type="{{item.type}}"
             class="search-tab {{searchTaskTab === item.type ? 'search-tab-active' : ''}}"
             >
@@ -40,16 +42,26 @@
           wx:for="{{taskList}}"
           wx:key="id"
           class="task-item"
-          bindtap="handleTaskTap"
+          bind:tap="navigateToTaskDetail"
           data-id="{{item.id}}"
           >
           <view class="task-header">
-            <radio-group class="radio-group" model:value="{{item.id}}" bindchange="handleTaskChange">
+            <!-- todo: 任务完成后，划线灰质禁止操作 -->
+            <view class="radio-group">
               <label class="radio-item">
-                <radio class="radio-item-radio" value="{{item.id}}" />
+                <radio 
+                  class="radio-item-radio" 
+                  color="#667eea" 
+                  value="{{item.id}}"
+                  checked="{{item.status === 'COMPLETED'}}"
+                  disabled="{{item.status === 'COMPLETED'}}"
+                  catch:tap="handleTaskStatusChange"
+                  data-id="{{item.id}}"
+                  data-status="{{item.status}}"
+                />
                 <text class="radio-item-text">{{item.text}}</text>
               </label>
-            </radio-group>
+            </view>
             <view class="task-priority {{item.priorityClass}}">{{item.priorityLabel}}</view>
           </view>
           <view class="task-meta">
@@ -64,7 +76,7 @@
       </view>
     </view>
   </view>
-  <button class="floating-add-btn" bindtap="handleAddTask">
+  <button class="floating-add-btn" bindtap="navigateToAddTask">
     <text>+</text>
   </button>
 </scroll-view>

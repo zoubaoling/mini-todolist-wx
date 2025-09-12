@@ -1,3 +1,5 @@
+import { ApiResponse } from "../types"
+
 export const formatTime = (date: Date) => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -23,4 +25,58 @@ export const setDataAndWait = (page: any, data: any): Promise<void> => {
       wx.nextTick(resolve)
     })
   })
+}
+// 小数转百分比
+export const formatToPercentage = (num: number) => {
+  return `${(num * 100).toFixed(2)}%`
+}
+// API调用包装器，统一处理错误
+export const apiWrapper = async <T>(
+  apiCall: () => Promise<T>,
+  errorMessage: string = '接口调用失败'
+): Promise<ApiResponse<T>> => {
+  try {
+    const data = await apiCall()
+    return {
+      success: true,
+      data
+    }
+  } catch (error) {
+    wx.showToast({
+      title: errorMessage,
+      icon: 'none',
+      duration: 2000
+    })
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : errorMessage
+    }
+  }
+}
+// 防抖
+export const debounce = (fun: Function, delay: number) => {
+  let timeoutId: any
+  return (...args: any[]) => {
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => {
+      fun(...args)
+    }, delay)
+  }
+}
+// 节流 定时器 + 时间戳
+export const throttle = (fun: Function, delay: number) => {
+  let lastTime = 0
+  let timeoutId: any
+  return (...args: any[]) => {
+    const now = Date.now()
+    if (now - lastTime >= delay) {
+      fun(...args)
+      lastTime = now
+    } else {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        fun(...args)
+      }, delay)
+    }
+  }
 }
