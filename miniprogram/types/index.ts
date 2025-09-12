@@ -23,8 +23,35 @@ export interface TaskItem {
   desc?: string,
   category: keyof typeof TaskCategory,
   isReminder: boolean,
-  createTime: string,
+  deadline?: string,
   date: string
   priority: keyof typeof TaskPriority
   status: keyof typeof TaskStatus,
+}
+export interface TaskListParams {
+  userId: string,
+  category?: keyof typeof TaskCategory,
+  search?: string,
+  pageSize?: number,
+  pageNum?: number,
+  sortOrder?: 'asc' | 'desc',
+}
+export type DateType = 'DAY' | 'WEEK' | 'MONTH' | 'ALL'
+export interface TaskOverview {
+  total: number,
+  completed: number,
+  doing: number,
+  completionRate: number,
+  continuousDays?: number,
+}
+export interface TaskCategoryCompletion {
+  category: keyof typeof TaskCategory,
+  completionRate: number,
+  total?: number,
+  completed?: number
+}
+export interface ApiResponse<T> {
+  success: boolean,
+  data?: T,
+  message?: string
 }

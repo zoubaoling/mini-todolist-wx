@@ -22,22 +22,22 @@
       <view class="task-detail-info-content">
         <view class="task-detail-info-content-item">
           <view class="task-detail-info-content-item-label">创建时间</view>
-          <view class="task-detail-info-content-item-value">{{taskDetail.createTime}}</view>
+          <view class="task-detail-info-content-item-value">{{taskDetail.createTimeFormat}}</view>
         </view>
         <view class="task-detail-info-content-item">
           <view class="task-detail-info-content-item-label">截止时间</view>
-          <view class="task-detail-info-content-item-value">{{taskDetail.date}}</view>
+          <view class="task-detail-info-content-item-value">{{taskDetail.deadlineFormat}}</view>
         </view>
         <view class="task-detail-info-content-item">
           <view class="task-detail-info-content-item-label">提醒设置</view>
-          <view class="task-detail-info-content-item-value">{{taskDetail.reminder}}</view>
+          <view class="task-detail-info-content-item-value">{{taskDetail.isReminder}}</view>
         </view>
       </view>
     </view>
     <view class="task-detail-actions">
-      <button class="action-button action-button-complete">标记完成</button>
-      <button class="action-button action-button-edit">编辑任务</button>
-      <button class="action-button action-button-delete">删除任务</button>
+      <button class="action-button action-button-complete" bind:tap="handleCompleteTask">标记完成</button>
+      <button class="action-button action-button-edit" bind:tap="handleEditTask">编辑任务</button>
+      <button class="action-button action-button-delete" bind:tap="handleDeleteTask">删除任务</button>
     </view>
   </view>
 </scroll-view>

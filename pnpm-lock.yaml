@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -21,6 +24,9 @@ importers:
 
 packages:
 
+  dayjs@1.11.18:
+    resolution: {integrity: sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==}
+
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
@@ -31,6 +37,8 @@ packages:
     resolution: {integrity: sha512-rKM3JYfJGB+R9G/yp6kGVN0Kc0hKqKoQnpoWm7OVrXNsYM0dlJXwTf+WsLkQtgUyfM20taqNaxXD852Bx7IseQ==}
 
 snapshots:
+
+  dayjs@1.11.18: {}
 
   lodash@4.17.21: {}
 
