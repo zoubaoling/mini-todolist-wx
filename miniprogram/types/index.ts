@@ -36,7 +36,7 @@ export interface TaskListParams {
   pageNum?: number,
   sortOrder?: 'asc' | 'desc',
 }
-export type DateType = 'today' | 'week' | 'month' | 'all'
+export type DateType = 'DAY' | 'WEEK' | 'MONTH' | 'ALL'
 export interface TaskOverview {
   total: number,
   completed: number,
@@ -47,6 +47,8 @@ export interface TaskOverview {
 export interface TaskCategoryCompletion {
   category: keyof typeof TaskCategory,
   completionRate: number,
+  total?: number,
+  completed?: number
 }
 export interface ApiResponse<T> {
   success: boolean,

@@ -8,7 +8,7 @@
         wx:key="value"
         wx:for-item="item"
         data-value="{{item.value}}"
-        bindtap="handleClickFilter"
+        bind:tap="handleClickFilter"
         >
         <view class="stats-filters-item-label">{{item.label}}</view>
       </view>
@@ -28,7 +28,7 @@
         <view class="stats-overview-item-value">完成率</view>
       </view>
       <view class="stats-overview-item card-box">
-        <view class="stats-overview-item-label">{{taskStats.consecutiveDays}}</view>
+        <view class="stats-overview-item-label">{{taskStats.continuousDays}}</view>
         <view class="stats-overview-item-value">连续天数</view>
       </view>
     </view>

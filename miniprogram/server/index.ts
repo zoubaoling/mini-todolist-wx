@@ -2,7 +2,7 @@ import { TaskItem, TaskListParams, TaskStatus, DateType, TaskOverview, ApiRespon
 import { apiWrapper } from '../utils/util'
 const cloudFunctionPrefix = 'todoList_'
 // 获取任务总览信息-今天、本周、本月、全部
-export const getTaskOverview = async (dateType: DateType = 'all'): Promise<ApiResponse<TaskOverview[]>> => {
+export const getTaskOverview = async (dateType: DateType = 'ALL'): Promise<ApiResponse<TaskOverview[]>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
       name: 'todoList_taskList',
@@ -111,12 +111,15 @@ export const updateTaskStatus = async (id: string, status: keyof typeof TaskStat
   }, '更新任务状态失败')
 }
 // 获取任务分类完成情况
-export const getTaskCategoryCompletion = async (): Promise<ApiResponse<TaskCategoryCompletion[]>> => {
+export const getTaskCategoryCompletion = async (dateType: DateType = 'ALL'): Promise<ApiResponse<TaskCategoryCompletion[]>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
     name: 'todoList_taskList',
     data: {
-      action: 'getTaskCategoryCompletion'
+      action: 'getTaskCategoryCompletion',
+      data: {
+        dateType
+      }
     }
   })
   return res
