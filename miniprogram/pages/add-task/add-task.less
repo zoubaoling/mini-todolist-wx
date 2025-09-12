@@ -49,6 +49,7 @@
           border: 3rpx solid @border-color;
           border-radius: @radius-lg;
           padding: @space-lg 0;
+          background-color: @white;
           &-label {
             font-size: @font-base;
             font-weight: 500;
@@ -62,16 +63,27 @@
         }
         .priority-high {
           border-color: @error-color;
-          background-color: @white;
+          &-selected {
+            color: @error-color;
+            background-color: fade(@error-color, 10%);
+            .shadow-md(@error-color, 40%);
+          }
         }
         .priority-medium {
-          color: @warning-color;
           border-color: @warning-color;
-          background-color: fade(@warning-color, 10%);
+          &-selected {
+            color: @warning-color;
+            background-color: fade(@warning-color, 10%);
+            .shadow-md(@warning-color, 40%);
+          }
         }
         .priority-low {
           border-color: @success-color;
-          background-color: @white;
+          &-selected {
+            color: @success-color;
+            background-color: fade(@success-color, 10%);
+            .shadow-md(@success-color, 40%);
+          }
         }
       }
     }

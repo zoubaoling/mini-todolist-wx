@@ -42,3 +42,18 @@ view, button, image, text, input, textarea, scroll-view {
   padding: @space-xl @space-xl;
   margin-bottom: @space-lg;
 }
+.shadow(@color: #000, @opacity: 1, @x: 0, @y: 2px, @blur: 8px, @spread: 0) {
+  box-shadow: @x @y @blur @spread fade(@color, @opacity);
+}
+.shadow-sm(@color: #000, @opacity: 1) {
+  .shadow(@color, @opacity, 0, 1px, 3px, 0);
+}
+.shadow-md(@color: #000, @opacity: 1) {
+  .shadow(@color, @opacity, 0, 4px, 6px, 0);
+}
+.shadow-lg(@color: #000, @opacity: 1) {
+  .shadow(@color, @opacity, 0, 10px, 15px, 0);
+}
+.shadow-xl(@color: #000, @opacity: 1) {
+  .shadow(@color, @opacity, 0, 20px, 25px, 0);
+}

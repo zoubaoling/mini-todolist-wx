@@ -17,10 +17,15 @@
       </view>
       <view class="add-task-page__content-basic-info-content">
         <view class="add-task-page__content-basic-info-content-item">
-          <text class="add-task-page__content-basic-info-content-item-label">任务标题*</text>
+          <text
+            class="add-task-page__content-basic-info-content-item-label"
+            >任务标题*</text>
           <input
             class="add-task-page__content-basic-info-content-item-input input-field"
             placeholder="请输入任务标题"
+            data-field="text"
+            value="{{taskFormData.text}}"
+            bind:input="debounceUpdateFormFieldData"
           />
         </view>
       </view>
@@ -30,6 +35,9 @@
           <textarea
             class="add-task-page__content-basic-info-content-item-textarea input-field"
             placeholder="请输入任务描述(可选)"
+            data-field="desc"
+            value="{{taskFormData.desc}}"
+            bind:input="debounceUpdateFormFieldData"
           />
         </view>
       </view>
@@ -41,10 +49,12 @@
       </view>
       <view class="add-task-page__content-priority-content">
         <view
-          class="add-task-page__content-priority-content-item {{item.class}}"
+          class="add-task-page__content-priority-content-item {{item.class}} {{taskFormData.priority === item.type ? item.selectedClass : ''}}"
           wx:for="{{priorityList}}"
           wx:key="type"
           data-type="{{item.type}}"
+          data-field="priority"
+          bind:tap="updateFormFieldData"
           >
             <text class="add-task-page__content-priority-content-item-label">{{item.label}}</text>
             <text class="add-task-page__content-priority-content-item-desc">{{item.desc}}</text>
@@ -58,10 +68,12 @@
       </view>
       <view class="add-task-page__content-category-content">
         <view
-          class="add-task-page__content-category-content-item {{selectedCategory === item.type ? 'selected' : ''}}"
+          class="add-task-page__content-category-content-item {{taskFormData.category === item.type ? 'selected' : ''}}"
           wx:for="{{categoryList}}"
           wx:key="type"
           data-type="{{item.type}}"
+          data-field="category"
+          bind:tap="updateFormFieldData"
         >{{item.label}}</view>
       </view>
     </view>
@@ -79,22 +91,21 @@
           <picker
             class="date-picker"
             mode="date"
-            value="{{selectedDate}}"
-            bindchange="onDateChange"
+            model:value="{{taskFormData.deadlineDate}}"
+            data-field="deadlineDate"
           >
             <view class="datetime-picker">
-              <text class="datetime-placeholder">{{selectedDate || '年 / 月 / 日'}}</text>
+              <text class="datetime-placeholder">{{taskFormData.deadlineDate || '年 / 月 / 日'}}</text>
               <image class="datetime-icon" src="/assets/images/date-dark.png" />
             </view>
           </picker>
           <picker
             class="time-picker"
             mode="time"
-            value="{{selectedTime}}"
-            bindchange="onTimeChange"
+            value="{{taskFormData.deadlineTime}}"
           >
             <view class="datetime-picker">
-              <text class="datetime-placeholder">{{selectedTime || '--:--'}}</text>
+              <text class="datetime-placeholder">{{taskFormData.deadlineTime || '--:--'}}</text>
               <image class="datetime-icon" src="/assets/images/time.png" />
             </view>
           </picker>
@@ -106,8 +117,9 @@
             <text class="add-task-page__content-time-content-reminder-content-label">开启提醒</text>
             <switch 
               class="add-task-page__content-time-content-reminder-switch" 
-              checked="{{isReminderEnabled}}"
-              bindchange="onReminderToggle"
+              checked="{{taskFormData.isReminder}}"
+              data-field="isReminder"
+              bind:change="updateFormFieldData"
             />
           </view>
         </view>
@@ -117,6 +129,7 @@
     <button
       class="add-task-page__content-create button"
       type="primary"
+      bind:tap="handleSaveTask"
       >
       <text>创建任务</text>
     </button>
