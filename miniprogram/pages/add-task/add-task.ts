@@ -18,13 +18,20 @@ Page({
       deadlineTime: TimeUtils.format(new Date(), 'hh:mm'),
       priority: 'HIGH',
       status: 'DOING'
-    }
+    },
+    isEdit: false,
+    editTaskId: ''
   },
-  onLoad() {
+  onLoad(options: any) {
+    this.setData({
+      isEdit: !!options.id,
+      editTaskId: options.id
+    })
     this.debounceUpdateFormFieldData = debounce(this.updateFormFieldData.bind(this), 500)
      // 确保数据初始化
     this.initPriorityList()
     this.initCategoryList()
+    this.initTaskDetail()
   },
   handleBack() {
     wx.navigateBack()
@@ -61,5 +68,20 @@ Page({
     this.setData({
       categoryList: list
     })
+  },
+  async initTaskDetail () {
+    if (this.data.isEdit) {
+      const res = await serverApi.getTaskDetail(this.data.editTaskId)
+      if (res.success && res.data) {
+        const { deadline, ...properties } = res.data
+        this.setData({
+          taskFormData: {
+            ...properties,
+            deadlineDate: TimeUtils.format(deadline, 'YYYY-MM-DD'),
+            deadlineTime: TimeUtils.format(deadline, 'hh:mm')
+          }
+        })
+      }
+    }
   }
 })
