@@ -1,4 +1,4 @@
-import { ApiResponse } from "../types"
+import { ApiResponse, ShowModalOptions } from "../types"
 
 export const formatTime = (date: Date) => {
   const year = date.getFullYear()
@@ -35,8 +35,8 @@ export const getAccountInfo = () => {
   return wx.getAccountInfoSync()
 }
 // 小数转百分比
-export const formatToPercentage = (num: number) => {
-  return `${(num * 100).toFixed(2)}%`
+export const formatToPercentage = (num: number, precision: number = 0) => {
+  return `${(num * 100).toFixed(precision)}%`
 }
 // API调用包装器，统一处理错误
 export const apiWrapper = async <T>(
@@ -87,4 +87,24 @@ export const throttle = (fun: Function, delay: number) => {
       }, delay)
     }
   }
+}
+export const showModal = ({
+  title = '确认',
+  content = '确定要删除该任务吗？',
+  confirmText = '删除',
+  confirmColor = '#FF4D4F',
+  cancelText = '取消'
+}: ShowModalOptions = {}) => {
+  return new Promise((resolve) => {
+    wx.showModal({
+      title,
+      content,
+      confirmText,
+      confirmColor,
+      cancelText,
+      success: (res) => {
+        resolve(res.confirm)
+      }
+    })
+  })
 }

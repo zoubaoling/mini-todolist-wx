@@ -131,7 +131,7 @@
       type="primary"
       bind:tap="handleSaveTask"
       >
-      <text>创建任务</text>
+      <text>{{isEdit ? '编辑任务' : '创建任务'}}</text>
     </button>
   </view>
 </scroll-view>

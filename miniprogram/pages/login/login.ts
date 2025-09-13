@@ -11,7 +11,6 @@ Page({
     // 4. 处理用户数据
     this.saveUserData(loginRes.data)
     this.showToast('登陆成功', 'success')
-    console.log('切换到首页')
 
     wx.switchTab({
       url: '/pages/home/home'

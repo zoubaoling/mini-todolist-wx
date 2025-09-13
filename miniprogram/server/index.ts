@@ -1,6 +1,15 @@
 import { TaskItem, TaskListParams, TaskStatus, DateType, TaskOverview, ApiResponse } from '../types/index'
 import { apiWrapper } from '../utils/util'
 const cloudFunctionPrefix = 'todoList_'
+/**
+ * callFunction返回格式： {
+ *  errMsg: string,
+ * requestID: string,
+ * result: {  
+ *  success: boolean,
+ *  data: any // 云函数返回的业务数据——云函数返回的数据外面包了一层result: { success: boolean, data: 业务代码返回 }
+ * }
+ */
 // 获取任务总览信息-今天、本周、本月、全部
 export const getTaskOverview = async (dateType: DateType = 'ALL'): Promise<ApiResponse<TaskOverview[]>> => {
   return apiWrapper(async () => {
@@ -9,8 +18,7 @@ export const getTaskOverview = async (dateType: DateType = 'ALL'): Promise<ApiRe
       data: {
         action: 'overview',
         data: {
-          dateType,
-          userId: wx.getStorageSync('userId')
+          dateType
         }
       }
     })
@@ -24,14 +32,13 @@ export const getTaskList = async (params: TaskListParams): Promise<ApiResponse<T
     name: 'todoList_taskList',
     data: {
       action: 'list',
-      // userId, category, search
+      // category, search
       data: {
-        userId: wx.getStorageSync('userId'),
         ...params
       }
     }
     })
-    return res
+    return res.result
   }, '获取任务列表失败')
 }
 // 获取任务详情
@@ -46,7 +53,7 @@ export const getTaskDetail = async (id: string): Promise<ApiResponse<TaskItem>> 
       }
     }
   })
-  return res
+  return res.result
   }, '获取任务详情失败')
 }
 // 添加任务
@@ -61,7 +68,7 @@ export const addTask = async (params: TaskItem) => {
       }
     }
   })
-  return res.data
+  return res.result
   }, '添加任务失败')
 }
 // 编辑任务
@@ -76,7 +83,7 @@ export const editTask = async (params: TaskItem): Promise<string> => {
       }
     }
   })
-  return res.data
+  return res.result
   }, '编辑任务失败')
 }
 // 删除任务
@@ -91,7 +98,7 @@ export const deleteTask = async (id: string): Promise<string> => {
       }
     }
   })
-  return res
+  return res.result
   }, '删除任务失败')
 }
 // 更新任务状态
@@ -107,7 +114,7 @@ export const updateTaskStatus = async (id: string, status: keyof typeof TaskStat
       }
     }
   })
-    return res
+    return res.result
   }, '更新任务状态失败')
 }
 // 获取任务分类完成情况
@@ -122,6 +129,6 @@ export const getTaskCategoryCompletion = async (dateType: DateType = 'ALL'): Pro
       }
     }
   })
-  return res
+  return res.result
   }, '获取任务分类完成情况失败')
 }

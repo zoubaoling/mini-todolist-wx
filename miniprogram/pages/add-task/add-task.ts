@@ -37,17 +37,32 @@ Page({
     wx.navigateBack()
   },
   async handleSaveTask() {
-    const deadline = TimeUtils.combineDateTimeSafe(this.data.taskFormData.deadlineDate, this.data.taskFormData.deadlineTime)
-    await taskApi.addTask({
-      ...this.data.taskFormData,
+    const { deadlineTime, deadlineDate, ...restFormData } = this.data.taskFormData
+    const deadline = TimeUtils.combineDateTimeSafe(deadlineDate, deadlineTime)
+    const saveFunc = this.data.isEdit ? serverApi.editTask : serverApi.addTask
+    await saveFunc({
+      ...restFormData,
       deadline
     })
-    wx.navigateBack()
+    // todo
+    wx.showToast({
+      title: '保存成功',
+      icon: 'success'
+    })
+    if (this.data.isEdit) {
+      wx.switchTab({
+        url: '/pages/home/home'
+      })
+    } else {
+      wx.navigateBack()
+    }
   },
   updateFormFieldData (e: any) {
     const { field, type } = e.currentTarget.dataset
     this.setData({
       [`taskFormData.${field}`]: ['text', 'desc', 'isReminder'].includes(field) ? e.detail.value : type
+    }, () => {
+      console.log('updateFormFieldData', this.data.taskFormData)
     })
   },
   initPriorityList () {

@@ -49,7 +49,8 @@ Page({
   },
   async getTaskCategoryList () {
     // 模拟不同分类的完成情况数据，与原型保持一致
-    // const res = await serverApi.getTaskCategoryCompletion(this.data.filterDimension)
+    const res = await serverApi.getTaskCategoryCompletion(this.data.filterDimension)
+    console.log('getTaskCategoryList', res)
     // if (res.success && res.data) {
     if (true) {
       const mockData2 = [

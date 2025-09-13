@@ -1,6 +1,7 @@
 import { TASK_CATEGORY, TASK_MAPS,  } from '../../constants/index'
 import { TaskStatus, TaskPriority, TaskItem } from '../../types/index'
-import { debounce } from '../../utils/util'
+import { debounce, formatToPercentage } from '../../utils/util'
+import TimeUtils from '../../utils/timer'
 import * as serverApi from '../../server/index'
 Page({
   data: {
@@ -9,13 +10,8 @@ Page({
     overviewData: [] as Array<{label: string, value: number | string}>,
     searchTaskValue: '',
     searchTaskTabs: [] as Array<{type: string, label: string}>,
-    searchTaskTab: 'ALL',
-    taskList: [
-      { id: 1, text: '完成项目报告', category: 'WORK', date: '2025-01-01', priority: 'HIGH', status: 'DOING' },
-      { id: 2, text: '购买生活用品', category: 'LIFE', date: '2025-01-02', priority: 'MEDIUM', status: 'COMPLETED' },
-      { id: 3, text: '阅读技术文档', category: 'LEARN', date: '2025-01-03', priority: 'LOW', status: 'DOING' },
-      { id: 4, text: '阅读技术文档2', category: 'HEALTH', date: '2025-01-03', priority: 'LOW', status: 'COMPLETED' },
-    ] as Array<TaskItem>
+    selectedSearchTaskTab: 'ALL',
+    taskList: []
   },
   onLoad() {
     this.debounceSearchTask = debounce(this.handleSearchTask.bind(this), 500)
@@ -33,16 +29,16 @@ Page({
   },
   // 获取概览信息
   async getOverviewData() {
-    // const res = await serverApi.getTaskOverview()
-    // if (res.success && res.data) {
-    if (true) {
-      // const { total, completed, doing, continuousDays } = res.data
+    const res = await serverApi.getTaskOverview()
+    console.log('getOverviewData', res)
+    if (res.success && res.data) {
+      const { total, completed, doing, completionRate } = res.data
       this.setData({
         overviewData: [
-          { label: TaskStatus.TOTAL, value: 100 },
-          { label: TaskStatus.COMPLETED, value: 100 },
-          { label: TaskStatus.DOING, value: 100 },
-          { label: '完成率', value: '67%' }
+          { label: TaskStatus.TOTAL, value: total },
+          { label: TaskStatus.COMPLETED, value: completed },
+          { label: TaskStatus.DOING, value: doing },
+          { label: '完成率', value: formatToPercentage(completionRate) }
         ]
       })
     }
@@ -57,7 +53,11 @@ Page({
   },
   handleSearchTabTap(e: any) {
     const { type } = e.currentTarget.dataset
-    this.getTaskList({ category: type })
+    this.setData({
+      selectedSearchTaskTab: type
+    }, () => {
+      this.getTaskList({ category: type })
+    })
   },
   handleSearchTask () {
     this.getTaskList({ search: this.data.searchTaskValue })
@@ -72,17 +72,17 @@ Page({
     // await serverApi.updateTaskStatus(id, newStatus)
     // this.getTaskList({ status: newStatus })
   },
-  async getTaskList(params?: any) { // eslint-disable-line @typescript-eslint/no-unused-vars
-    // const res = await serverApi.getTaskList(params)
-    // if (true && res.success && res.data) {
-    if (true) {
-      // const { taskList } = res.data
-      const taskList: Array<TaskItem> = this.data.taskList.map((item) => {
+  async getTaskList(params?: any) {
+    const res = await serverApi.getTaskList(params)
+    console.log('getTaskList', res)
+    if (res.success && res.data) {
+      const taskList: Array<TaskItem> = res.data?.list?.map((item) => {
         return {
           ...item,
           categoryLabel: TASK_MAPS.category[item.category],
           priorityLabel: `${TASK_MAPS.priority[item.priority]}优先级`,
-          priorityClass: `priority-${item.priority.toLowerCase()}`
+          priorityClass: `priority-${item.priority.toLowerCase()}`,
+          date: TimeUtils.formatDate(item.deadline)
         }
       })
       this.setData({

@@ -30,7 +30,7 @@
             wx:key="type"
             bind:tap="handleSearchTabTap"
             data-type="{{item.type}}"
-            class="search-tab {{searchTaskTab === item.type ? 'search-tab-active' : ''}}"
+            class="search-tab {{selectedSearchTaskTab === item.type ? 'search-tab-active' : ''}}"
             >
             <text>{{item.label}}</text>
           </view>
@@ -43,7 +43,7 @@
           wx:key="id"
           class="task-item"
           bind:tap="navigateToTaskDetail"
-          data-id="{{item.id}}"
+          data-id="{{item._id}}"
           >
           <view class="task-header">
             <!-- todo: 任务完成后，划线灰质禁止操作 -->
