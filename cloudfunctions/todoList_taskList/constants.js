@@ -1,0 +1,15 @@
+module.exports = {
+  STATUS_TYPE: {
+    DOING: 'DOING',
+    COMPLETED: 'COMPLETED',
+    TOTAL: 'TOTAL'
+  },
+  CATEGORY_TYPE: {
+    WORK: 'WORK',
+    LIFE: 'LIFE',
+    LEARN: 'LEARN',
+    HEALTH: 'HEALTH',
+    ENTERTAINMENT: 'ENTERTAINMENT',
+    SHOPPING: 'SHOPPING'
+  }
+}

@@ -51,8 +51,7 @@ Page({
     // 模拟不同分类的完成情况数据，与原型保持一致
     const res = await serverApi.getTaskCategoryCompletion(this.data.filterDimension)
     console.log('getTaskCategoryList', res)
-    // if (res.success && res.data) {
-    if (true) {
+    if (res.success && res.data) {
       const mockData2 = [
         { category: 'WORK', completionRate: 0.8 },
         { category: 'LIFE', completionRate: 0.65 },
@@ -62,7 +61,7 @@ Page({
         { category: 'SHOPPING', completionRate: 0.67 }
       ]
       const list = Object.values(TASK_CATEGORY).map(({type, ...items}) => {
-        const data = mockData2.find(item => item.category === type)
+        const data = res.data.find(item => item.category === type)
         return {
           ...items,
           type,
