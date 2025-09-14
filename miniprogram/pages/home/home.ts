@@ -75,8 +75,8 @@ Page({
   },
   // 任务状态切换
   async handleTaskStatusChange(e: any) {
-    if (this.isTaskItemDisabled(e.currentTarget.dataset.status)) return
-    const { id, status } = e.currentTarget.dataset
+    const { status, id, isEditable } = e.currentTarget.dataset
+    if (!isEditable) return
     if (status === 'COMPLETED') return
     const newStatus: keyof typeof TaskStatus = status === 'DOING' ? 'COMPLETED' : 'DOING'
     // 调用服务器API更新状态
@@ -89,18 +89,21 @@ Page({
       if (res.success && res.data) {
         const taskList: Array<TaskItem> = (res.data as any)?.list?.map((item: any) => {
           const isCompleted = item.status === 'COMPLETED'
+          const isExpired = TimeUtils.isExpired(item.deadline)
+          const isEditable = !isCompleted && !isExpired
           return {
             ...item,
             categoryLabel: TASK_MAPS.category[item.category as keyof typeof TASK_MAPS.category],
             priorityLabel: `${TASK_MAPS.priority[item.priority as keyof typeof TASK_MAPS.priority]}优先级`,
             priorityClass: `priority-${item.priority.toLowerCase()} ${isCompleted && 'line-through'}`,
-            textClass: isCompleted && 'line-through',
-            categoryClass: isCompleted && 'line-through',
-            dateClass: isCompleted && 'line-through',
-            itemClass: isCompleted && 'task-item-completed',
+            textClass: !isEditable && 'line-through',
+            categoryClass: !isEditable && 'line-through',
+            dateClass: !isEditable && 'line-through',
+            itemClass: !isEditable && 'task-item-completed',
             date: TimeUtils.formatDate(item.deadline),
             // 是否过期
-            isExpired: TimeUtils.isExpired(item.deadline)
+            isExpired,
+            isEditable
           }
         }) || []
         this.setData({
@@ -125,14 +128,28 @@ Page({
       url: '/pages/add-task/add-task'
     })
   },
-  isTaskItemDisabled(status: string) {
-    return status === 'COMPLETED'
-  },
   navigateToTaskDetail(e: any) {
-    const { id, status, isExpired } = e.currentTarget.dataset
-    if (this.isTaskItemDisabled(status) || isExpired) return
+    const { id, status, isEditable } = e.currentTarget.dataset
+    if (!isEditable) return
     wx.navigateTo({
       url: `/pages/task-detail/task-detail?id=${id}`
     })
+  },
+  handleScroll(e: any) {
+    console.log('handleScroll', e)
+  },
+  onSwipeCellEditClick(e: any) {
+    const { id } = e.currentTarget.dataset
+    wx.navigateTo({
+      url: `/pages/add-task/add-task?id=${id}`
+    })
+  },
+  async onSwipeCellDeleteClick(e: any) {
+    const { id } = e.currentTarget.dataset
+    const confirm = await showModal()
+    if (confirm) {
+      await serverApi.deleteTask(id, { loading: true, loadingText: '删除中...' })
+      this.getTaskList()
+    }
   }
 })

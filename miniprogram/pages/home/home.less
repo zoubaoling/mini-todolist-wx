@@ -1,5 +1,8 @@
 .home-page {
   background-color: #ffffff;
+  height: 100vh;
+  overflow: hidden;
+  .flex-column;
   .tag-item {
     box-sizing: border-box;
     border: 1rpx solid @border-color;
@@ -8,6 +11,9 @@
   }
   .home-content {
     padding: 0 @space-xl @space-xl;
+    flex: 1;
+    .flex-column;
+    overflow: hidden;
     .task-overview {
       .flex-row-center;
       border-radius: @radius-xl;
@@ -90,10 +96,16 @@
         }
       }
     }
+    .task-content {
+      flex: 1;
+      .flex-column;
+      overflow: hidden;
+    }
     .task-list {
+      flex: 1;
       .flex-column-center;
       margin-top: @space-md;
-      
+      overflow: auto;
       // 空状态样式
       .empty-state {
         .flex-column-center;
@@ -141,8 +153,11 @@
           }
         }
       }
+      .t-swipe-cell {
+        width: 100%;
+      }
       
-      .task-item {
+      .task-item{
         .flex-column-center;
         width: 100%;
         height: 170rpx;
@@ -217,6 +232,29 @@
       }
       .task-item:not(:last-child) {
         margin-bottom: @space-lg;
+      }
+      .right-slot {
+        display: flex;
+        height: 100%;
+      }
+      
+      .right-slot .btn {
+        width: 120rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+      }
+      .edit-btn {
+        background-color: @primary-color; /* tdesign 主色 */
+        color: white;
+        height: 100%;
+      }
+
+      .delete-btn {
+        background-color: @error-color;
+        color: @white;
+        height: 100%;
       }
     }
   }

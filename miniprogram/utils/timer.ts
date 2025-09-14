@@ -8,7 +8,6 @@ dayjs.locale('zh-cn')
 const TimeUtils = {
   formatDate(date: string | Date | number, format: string = 'YYYY-MM-DD') {
     const t = dayjs(date)
-    console.log(t)
     return dayjs(date).format(format)
   },
   now() {

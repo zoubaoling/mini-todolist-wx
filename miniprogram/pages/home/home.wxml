@@ -1,4 +1,4 @@
-<scroll-view class="home-page">
+<view class="home-page">
   <!-- header -->
   <navigator-bar title="智能待办清单" subTitle="让生活更有序"></navigator-bar>
   <view class="home-content">
@@ -48,46 +48,64 @@
         </view>
       </view>
       <!-- 过滤任务列表 -->
-      <view class="task-list">
+      <scroll-view 
+        class="task-list"
+        scroll-y
+        enhanced
+        show-scrollbar="{{true}}"
+        refresher-enabled="{{true}}"
+        bindscroll="handleScroll"
+        >
         <!-- 任务列表 -->
-        <view
-          wx:if="{{taskList.length > 0}}"
-          wx:for="{{taskList}}"
-          wx:key="id"
-          class="task-item {{item.itemClass}}"
-          bind:tap="navigateToTaskDetail"
-          data-id="{{item._id}}"
-          data-status="{{item.status}}"
-          >
-          <view class="task-header">
-            <!-- todo: 任务完成后，划线灰质禁止操作 -->
-            <view class="radio-group">
-              <label class="radio-item">
-                <radio 
-                  class="radio-item-radio" 
-                  color="#667eea"
-                  value="{{item.id}}"
-                  checked="{{item.status === 'COMPLETED'}}"
-                  catch:tap="handleTaskStatusChange"
-                  data-id="{{item._id}}"
-                  data-is-expired="{{item.isExpired}}"
-                  data-status="{{item.status}}"
-                />
-                <text class="radio-item-text {{item.textClass}}">{{item.text}}</text>
-              </label>
+        <block wx:for="{{taskList}}" wx:key="_id" wx:if="{{taskList.length > 0}}">
+          <t-swipe-cell
+            id="{{item._id}}"
+            >
+            <view
+              class="task-item {{item.itemClass}}"
+              bind:tap="navigateToTaskDetail"
+              data-id="{{item._id}}"
+              data-status="{{item.status}}"
+              data-is-editable="{{item.isEditable}}"
+              >
+              <view class="task-header">
+                <!-- todo: 任务完成后，划线灰质禁止操作 -->
+                <view class="radio-group">
+                  <label class="radio-item">
+                    <radio 
+                      class="radio-item-radio" 
+                      color="#667eea"
+                      value="{{item.id}}"
+                      checked="{{item.status === 'COMPLETED'}}"
+                      catch:tap="handleTaskStatusChange"
+                      data-id="{{item._id}}"
+                      data-status="{{item.status}}"
+                      data-is-editable="{{item.isEditable}}"
+                    />
+                    <text class="radio-item-text {{item.textClass}}">{{item.text}}</text>
+                  </label>
+                </view>
+                <view class="task-priority {{item.priorityClass}} {{item.textClass}}">{{item.priorityLabel}}</view>
+              </view>
+              <view class="task-meta">
+                <!-- 已完成、未完成的时间 -->
+                <view class="task-date">
+                  <image src="/assets/images/date.png" class="task-date-icon" />
+                  <text class="task-date-text {{item.dateClass}}">{{ item.status === 'COMPLETED' ? '已完成' : item.date}}</text>
+                </view>
+                <view class="task-category {{item.categoryClass}}">{{item.categoryLabel}}</view>
+              </view>
             </view>
-            <view class="task-priority {{item.priorityClass}} {{item.textClass}}">{{item.priorityLabel}}</view>
-          </view>
-          <view class="task-meta">
-            <!-- 已完成、未完成的时间 -->
-            <view class="task-date">
-              <image src="/assets/images/date.png" class="task-date-icon" />
-              <text class="task-date-text {{item.dateClass}}">{{ item.status === 'COMPLETED' ? '已完成' : item.date}}</text>
+            <view slot="right" class="right-slot">
+              <view wx:if="{{item.isEditable}}" class="btn edit-btn column" data-id="{{item._id}}" bind:tap="onSwipeCellEditClick">
+                编辑
+              </view>
+              <view class="btn delete-btn column" data-id="{{item._id}}" bind:tap="onSwipeCellDeleteClick">
+                删除
+              </view>
             </view>
-            <view class="task-category {{item.categoryClass}}">{{item.categoryLabel}}</view>
-          </view>
-        </view>
-        
+          </t-swipe-cell>
+        </block>
         <!-- 空状态 -->
         <view wx:if="{{taskList.length === 0}}" class="empty-state">
           <view class="empty-state-icon">
@@ -102,7 +120,7 @@
             <text>+ 添加任务</text>
           </button>
         </view>
-      </view>
+      </scroll-view>
     </view>
   </view>
   
@@ -114,4 +132,4 @@
   >
     <text>+</text>
   </button>
-</scroll-view>
+</view>
