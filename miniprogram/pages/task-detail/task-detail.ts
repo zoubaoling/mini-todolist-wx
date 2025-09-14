@@ -1,7 +1,7 @@
 import { TASK_MAPS} from '../../constants/index'
 import * as serverApi from '../../server/index'
 import TimeUtils from '../../utils/timer'
-import { showModal } from '../../utils/util'
+import { showModal, showToastWithPromise } from '../../utils/util'
 Page({
   data: {
     taskDetail: {}
@@ -14,15 +14,15 @@ Page({
   },
   async initTaskDetail (id: string) {
     const res = await serverApi.getTaskDetail(id)
-    console.log('getTaskDetail', res)
     if (res.success && res.data) {
-      const { createTime, deadline, priority, category, status, ...properties }= res.data
+      const { createTime, deadline, priority, category, status, isReminder, ...properties }= res.data
       this.setData({
         taskDetail: {
           ...properties,
           priorityLabel: `${TASK_MAPS.priority[priority]}优先级`,
           categoryLabel: `${TASK_MAPS.category[category]}`,
           statusLabel: `${TASK_MAPS.status[status]}`,
+          isReminderLabel: isReminder ? '开启' : '关闭',
           className: {
             priority: `priority-${priority.toLowerCase()}`,
             status: `status-${status.toLowerCase()}`
@@ -50,11 +50,11 @@ Page({
   async handleDeleteTask () {
     const confirm = await showModal()
     if (confirm) {
-      await serverApi.deleteTask(this.data.taskDetail._id)
-      // todo 删除确认弹框
-      wx.showToast({  
+      await serverApi.deleteTask(this.data.taskDetail._id, { loading: true, loadingText: '删除中...' })
+      await showToastWithPromise({
         title: '删除任务成功',
-        icon: 'success'
+        icon: 'success',
+        duration: 1500
       })
       wx.navigateBack()
     }

@@ -15,7 +15,6 @@ const TimeUtils = {
     return dayjs()
   },
   format(date: string | Date | number, format: string= 'YYYY-MM-DD HH:mm:ss') {
-    console.log(dayjs(date).format(format))
     return dayjs(date).format(format)
   },
    // 拼接日期和时间（更安全的方式）
@@ -33,6 +32,11 @@ const TimeUtils = {
       date: date.format('YYYY-MM-DD'),
       time: date.format('HH:mm')
     }
+  },
+  isExpired(date: string | Date | number) {
+    const now = dayjs()
+    const end = dayjs(date)
+    return end.isBefore(now)
   },
   // 计算倒计时
   countdown(endDate: string | Date | number) {

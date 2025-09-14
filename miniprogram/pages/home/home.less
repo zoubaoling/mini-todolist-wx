@@ -29,6 +29,11 @@
     }
     .filter-content {
       margin-top: @space-xl;
+      .search-input-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
       .search-input {
         box-sizing: border-box; // border-box方便计算布局
         width: 100%;
@@ -40,7 +45,30 @@
         padding: 0 @space-xl;
         background-color: @bg-primary;
         font-size: @font-base;
+        flex: 1;
       }
+      .search-clear-btn {
+        position: absolute;
+        right: @space-2xl;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50rpx;
+        height: 50rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f0f0f0;
+        padding: @space-xs;
+        z-index: 10;
+        border-radius: 50%;
+      }
+
+      .search-clear-icon {
+        font-size: @font-xl;
+        color: #999;
+        line-height: 1;
+      }
+      
       .search-tabs {
         margin-top: @space-xl;
         .flex;
@@ -65,6 +93,55 @@
     .task-list {
       .flex-column-center;
       margin-top: @space-md;
+      
+      // 空状态样式
+      .empty-state {
+        .flex-column-center;
+        padding: @space-2xl @space-xl;
+        text-align: center;
+        
+        .empty-state-icon {
+          margin-bottom: @space-lg;
+          
+          .empty-icon {
+            font-size: 120rpx;
+            opacity: 0.6;
+          }
+        }
+        
+        .empty-state-title {
+          font-size: @font-xl;
+          font-weight: bold;
+          color: @text-primary;
+          margin-bottom: @space-md;
+        }
+        
+        .empty-state-desc {
+          font-size: @font-base;
+          color: @text-secondary;
+          line-height: 1.5;
+          margin-bottom: @space-xl;
+          max-width: 500rpx;
+        }
+        
+        // 空状态按钮样式
+        .empty-state-btn {
+          background-color: @primary-color;
+          color: @white;
+          border-radius: @radius-lg;
+          padding: @space-md @space-xl;
+          font-size: @font-base;
+          border: none;
+          box-shadow: @shadow-sm;
+          margin-top: @space-lg;
+          
+          &:active {
+            background-color: @primary-dark;
+            transform: scale(0.98);
+          }
+        }
+      }
+      
       .task-item {
         .flex-column-center;
         width: 100%;
@@ -73,6 +150,10 @@
         box-shadow: @shadow-md;
         box-sizing: border-box;
         padding: 0 @space-lg;
+        &.task-item-completed {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
         .task-header {
           width: 100%;
           .flex-row-center;

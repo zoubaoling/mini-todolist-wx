@@ -31,6 +31,18 @@ export const setDataAndWait = (page: any, data: any): Promise<void> => {
     })
   })
 }
+export const showToastWithPromise = (options) => {
+  return new Promise((resolve) => {
+    let timer = null
+    wx.showToast({
+      ...options,
+      success: () => {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(resolve, options.duration)
+      }
+    })
+  })
+}
 export const getAccountInfo = () => {
   return wx.getAccountInfoSync()
 }
@@ -41,26 +53,52 @@ export const formatToPercentage = (num: number, precision: number = 0) => {
 // API调用包装器，统一处理错误
 export const apiWrapper = async <T>(
   apiCall: () => Promise<T>,
-  errorMessage: string = '接口调用失败'
+  options: {
+    errorMessage: string,
+    loading?: boolean;
+    loadingText?: string;
+  } = {}
 ): Promise<ApiResponse<T>> => {
+  const { loading = true, loadingText = '加载中', errorMessage = '接口调用失败' } = options;
+  
   try {
-    const data = await apiCall()
+    // 根据配置决定是否显示 loading
+    if (loading) {
+      wx.showLoading({
+        title: loadingText,
+        mask: true
+      });
+    }
+    
+    const data = await apiCall();
+    
+    // 隐藏 loading
+    if (loading) {
+      wx.hideLoading();
+    }
+    
     return {
       success: true,
       data
-    }
+    };
   } catch (error) {
+    // 隐藏 loading
+    if (loading) {
+      wx.hideLoading();
+    }
+    
     wx.showToast({
       title: errorMessage,
       icon: 'none',
       duration: 2000
-    })
+    });
+    
     return {
       success: false,
       message: error instanceof Error ? error.message : errorMessage
-    }
+    };
   }
-}
+};
 // 防抖
 export const debounce = (fun: Function, delay: number) => {
   let timeoutId: any

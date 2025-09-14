@@ -1,4 +1,4 @@
-import { TaskItem, TaskListParams, TaskStatus, DateType, TaskOverview, ApiResponse } from '../types/index'
+import { TaskItem, TaskListParams, TaskStatus, DateType, TaskOverview, ApiResponse, ServerApiConfigOptions, TaskCategoryCompletion } from '../types/index'
 import { apiWrapper } from '../utils/util'
 const cloudFunctionPrefix = 'todoList_'
 /**
@@ -11,7 +11,10 @@ const cloudFunctionPrefix = 'todoList_'
  * }
  */
 // 获取任务总览信息-今天、本周、本月、全部
-export const getTaskOverview = async (dateType: DateType = 'ALL'): Promise<ApiResponse<TaskOverview[]>> => {
+export const getTaskOverview = async (
+  dateType: DateType = 'ALL',
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<TaskOverview[]>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
       name: 'todoList_taskList',
@@ -21,114 +24,135 @@ export const getTaskOverview = async (dateType: DateType = 'ALL'): Promise<ApiRe
           dateType
         }
       }
-    })
-    return res.result
-  }, '获取任务总览信息失败')
-}
+    });
+    return res.result;
+  }, options);
+};
 // 获取用户任务列表-所有；按类型分类；按名称搜索分类
-export const getTaskList = async (params: TaskListParams): Promise<ApiResponse<TaskItem[]>> => {
+export const getTaskList = async (
+  params: TaskListParams,
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<TaskItem[]>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
-    name: 'todoList_taskList',
-    data: {
-      action: 'list',
-      // category, search
+      name: 'todoList_taskList',
       data: {
-        ...params
+        action: 'list',
+        data: {
+          ...params
+        }
       }
-    }
-    })
-    return res.result
-  }, '获取任务列表失败')
-}
+    });
+    return res.result;
+  }, options);
+};
 // 获取任务详情
-export const getTaskDetail = async (id: string): Promise<ApiResponse<TaskItem>> => {
+export const getTaskDetail = async (
+  id: string,
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<TaskItem>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
-    name: 'todoList_taskList',
-    data: {
-      action: 'detail',
+      name: 'todoList_taskList',
       data: {
-        id
+        action: 'detail',
+        data: {
+          id
+        }
       }
-    }
-  })
-  return res.result
-  }, '获取任务详情失败')
-}
+    });
+    return res.result;
+  },  options);
+};
 // 添加任务
-export const addTask = async (params: TaskItem) => {
+export const addTask = async (
+  params: TaskItem,
+  options: ServerApiConfigOptions = { loading: true, loadingText: '保存中...' }
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
-  const res = await wx.cloud.callFunction({
-    name: 'todoList_taskList',
-    data: {
-      action: 'add',
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_taskList',
       data: {
-        ...params
+        action: 'add',
+        data: {
+          ...params
+        }
       }
-    }
-  })
-  return res.result
-  }, '添加任务失败')
-}
+    });
+    return res.result;
+  }, options);
+};
 // 编辑任务
-export const editTask = async (params: TaskItem): Promise<string> => {
+export const editTask = async (
+  params: TaskItem,
+  options: ServerApiConfigOptions = { loading: true, loadingText: '保存中...' }
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
-    name: 'todoList_taskList',
-    data: {
-      action: 'edit',
+      name: 'todoList_taskList',
       data: {
-        ...params
+        action: 'edit',
+        data: {
+          ...params
+        }
       }
-    }
-  })
-  return res.result
-  }, '编辑任务失败')
-}
+    });
+    return res.result;
+  }, options);
+};
 // 删除任务
-export const deleteTask = async (id: string): Promise<string> => {
+export const deleteTask = async (
+  id: string,
+  options: ServerApiConfigOptions = { loading: true, loadingText: '删除中...' }
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
-    name: 'todoList_taskList',
-    data: {
-      action: 'delete',
+      name: 'todoList_taskList',
       data: {
-        id
+        action: 'delete',
+        data: {
+          id
+        }
       }
-    }
-  })
-  return res.result
-  }, '删除任务失败')
-}
+    });
+    return res.result;
+  }, options);
+};
 // 更新任务状态
-export const updateTaskStatus = async (id: string, status: keyof typeof TaskStatus): Promise<ApiResponse<string>> => {
+export const updateTaskStatus = async (
+  id: string,
+  status: keyof typeof TaskStatus,
+  options: ServerApiConfigOptions = { loading: true, loadingText: '更新中...' }
+): Promise<ApiResponse<string>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
-    name: 'todoList_taskList',
-    data: {
-      action: 'updateStatus',
+      name: 'todoList_taskList',
       data: {
-        id,
-        status
+        action: 'updateStatus',
+        data: {
+          id,
+          status
+        }
       }
-    }
-  })
-    return res.result
-  }, '更新任务状态失败')
-}
+    });
+    return res.result;
+  }, options);
+};
 // 获取任务分类完成情况
-export const getTaskCategoryCompletion = async (dateType: DateType = 'ALL'): Promise<ApiResponse<TaskCategoryCompletion[]>> => {
+export const getTaskCategoryCompletion = async (
+  dateType: DateType = 'ALL',
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<TaskCategoryCompletion[]>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
-    name: 'todoList_taskList',
-    data: {
-      action: 'getTaskCategoryCompletion',
+      name: 'todoList_taskList',
       data: {
-        dateType
+        action: 'getTaskCategoryCompletion',
+        data: {
+          dateType
+        }
       }
-    }
-  })
-  return res.result
-  }, '获取任务分类完成情况失败')
-}
+    });
+    return res.result;
+  }, options);
+};

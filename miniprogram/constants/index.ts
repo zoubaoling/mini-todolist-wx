@@ -89,6 +89,10 @@ export const TASK_MAPS = {
 // 统计维度
 export const STATS_DIMENSION = [
   {
+    label: '全部',
+    value: 'ALL'
+  },
+  {
     label: '今天',
     value: 'DAY'
   },
@@ -99,9 +103,5 @@ export const STATS_DIMENSION = [
   {
     label: '本月',
     value: 'MONTH'
-  },
-  {
-    label: '全部',
-    value: 'ALL'
   }
 ]

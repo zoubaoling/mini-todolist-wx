@@ -66,3 +66,8 @@ export interface ShowModalOptions {
   confirmColor?: string
   cancelText?: string
 }
+export interface ServerApiConfigOptions {
+  loading?: boolean
+  loadingText?: string,
+  errorMessage?: string
+}

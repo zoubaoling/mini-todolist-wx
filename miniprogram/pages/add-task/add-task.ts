@@ -1,5 +1,5 @@
 import { TASK_PRIORITY, TASK_CATEGORY } from "../../constants/index"
-import { debounce } from "../../utils/util"
+import { debounce, showToastWithPromise } from "../../utils/util"
 import TimeUtils from "../../utils/timer"
 import * as serverApi from '../../server/index'
 Page({
@@ -44,10 +44,10 @@ Page({
       ...restFormData,
       deadline
     })
-    // todo
-    wx.showToast({
+    await showToastWithPromise({
       title: '保存成功',
-      icon: 'success'
+      icon: 'success',
+      duration: 1500
     })
     if (this.data.isEdit) {
       wx.switchTab({
@@ -60,9 +60,8 @@ Page({
   updateFormFieldData (e: any) {
     const { field, type } = e.currentTarget.dataset
     this.setData({
-      [`taskFormData.${field}`]: ['text', 'desc', 'isReminder'].includes(field) ? e.detail.value : type
+      [`taskFormData.${field}`]: ['text', 'desc', 'isReminder', 'deadlineDate', 'deadlineTime'].includes(field) ? e.detail.value : type
     }, () => {
-      console.log('updateFormFieldData', this.data.taskFormData)
     })
   },
   initPriorityList () {

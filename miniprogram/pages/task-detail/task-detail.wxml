@@ -30,7 +30,7 @@
         </view>
         <view class="task-detail-info-content-item">
           <view class="task-detail-info-content-item-label">提醒设置</view>
-          <view class="task-detail-info-content-item-value">{{taskDetail.isReminder}}</view>
+          <view class="task-detail-info-content-item-value">{{taskDetail.isReminderLabel}}</view>
         </view>
       </view>
     </view>

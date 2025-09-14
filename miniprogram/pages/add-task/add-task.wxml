@@ -91,8 +91,9 @@
           <picker
             class="date-picker"
             mode="date"
-            model:value="{{taskFormData.deadlineDate}}"
+            value="{{taskFormData.deadlineDate}}"
             data-field="deadlineDate"
+            bind:change="updateFormFieldData"
           >
             <view class="datetime-picker">
               <text class="datetime-placeholder">{{taskFormData.deadlineDate || '年 / 月 / 日'}}</text>
@@ -103,6 +104,8 @@
             class="time-picker"
             mode="time"
             value="{{taskFormData.deadlineTime}}"
+            data-field="deadlineTime"
+            bind:change="updateFormFieldData"
           >
             <view class="datetime-picker">
               <text class="datetime-placeholder">{{taskFormData.deadlineTime || '--:--'}}</text>

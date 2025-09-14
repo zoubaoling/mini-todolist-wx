@@ -1,8 +1,7 @@
 // 处理任务列表数据
 const getTaskList = async (cloud, db, params) => {
-  const { category, search, pageSize = 10, pageNum = 1, sortOrder = 'asc' } = params
+  const { category, search, pageSize = 10, pageNum = 1, sortOrder = 'desc' } = params
   const { OPENID } = cloud.getWXContext()
-  console.log('getTaskList', { category, search, pageSize, pageNum, sortOrder })
   let query = db.collection('todoList_tasks').where({
     'author.openid': OPENID
   })
@@ -24,7 +23,8 @@ const getTaskList = async (cloud, db, params) => {
   }
   // 根据sortOrder排序
   if (sortOrder) {
-    query = query.orderBy('createTime', sortOrder)
+    // asc 升序， desc 降序
+    query = query.orderBy('updatedTime', sortOrder)
   }
   /**
    * 分页：
