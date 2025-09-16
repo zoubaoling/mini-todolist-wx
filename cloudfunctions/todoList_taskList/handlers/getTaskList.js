@@ -1,8 +1,10 @@
+const { TASKS_COLLECTION } = require('../constants')
+
 // 处理任务列表数据
 const getTaskList = async (cloud, db, params) => {
   const { category, search, pageSize = 10, pageNum = 1, sortOrder = 'desc' } = params
   const { OPENID } = cloud.getWXContext()
-  let query = db.collection('todoList_tasks').where({
+  let query = db.collection(TASKS_COLLECTION).where({
     'author.openid': OPENID
   })
   // 根据category过滤

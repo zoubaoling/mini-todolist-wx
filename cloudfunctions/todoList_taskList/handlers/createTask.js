@@ -1,8 +1,10 @@
 const TimeUtils = require('../utils/timer')
+const { TASKS_COLLECTION } = require('../constants')
+
 const createTask = async (cloud, db, params) => {
   try {
     const { OPENID } = cloud.getWXContext()
-    const task = await db.collection('todoList_tasks')
+    const task = await db.collection(TASKS_COLLECTION)
       .add({
         data: {
           ...params,

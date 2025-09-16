@@ -1,3 +1,5 @@
+const { TASKS_COLLECTION } = require('../constants')
+
 // 删除任务
 const deleteTask = async (cloud, db, params) => {
   const { OPENID } = cloud.getWXContext()
@@ -7,7 +9,7 @@ const deleteTask = async (cloud, db, params) => {
   if (!params.id) {
     throw new Error('任务ID不能为空')
   }
-  const taskQuery = await db.collection('todoList_tasks')
+  const taskQuery = await db.collection(TASKS_COLLECTION)
     .doc(params.id).get()
   if (!taskQuery.data) {
     throw new Error('任务不存在')
