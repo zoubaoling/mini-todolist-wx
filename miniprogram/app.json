@@ -6,7 +6,6 @@
     "pages/profile/profile",
     "pages/add-task/add-task",
     "pages/task-detail/task-detail",
-    "pages/debug/debug"
   ],
   "usingComponents": {
     "navigator-bar": "/components/navigator-bar/navigator-bar",
