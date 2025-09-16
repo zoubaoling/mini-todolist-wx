@@ -2,14 +2,22 @@
   <!-- 用户信息头部 -->
   <view class="profile-header">
     <view class="user-info">
-      <image 
-        class="user-avatar" 
-        src="{{userInfo.avatarUrl || '/assets/images/default-avatar.png'}}"
-        mode="aspectFill"
-      />
+      <view class="avatar-container" bind:tap="handleAvatarTap">
+        <image 
+          class="user-avatar" 
+          src="{{userInfo.avatarUrl || '/assets/images/default-avatar.png'}}"
+          mode="aspectFill"
+          bind:error="handleAvatarError"
+          show-menu-by-longpress="{{false}}"
+          lazy-load="{{true}}"
+        />
+        <view class="avatar-edit-icon">📷</view>
+      </view>
       <view class="user-details">
-        <text class="user-name">{{userInfo.nickName || '未登录'}}</text>
-        <text class="user-id">ID: {{userInfo.openid || '未知'}}</text>
+        <view class="nickname-container" bind:tap="handleNicknameTap">
+          <text class="user-name">{{userInfo.nickName || '未登录'}}</text>
+          <view class="edit-icon">✏️</view>
+        </view>
       </view>
     </view>
   </view>
@@ -67,4 +75,28 @@
       </view>
     </view>
   </view>
+
+  <!-- 昵称编辑弹窗 -->
+  <view wx:if="{{showNicknameDialog}}" class="nickname-modal-overlay">
+    <view class="nickname-modal">
+      <view class="nickname-modal-title">修改昵称</view>
+      <view class="nickname-input-container">
+        <input
+          class="nickname-input"
+          value="{{editingNickname}}"
+          placeholder="请输入昵称"
+          maxlength="20"
+          bind:input="handleNicknameInputChange"
+          bind:blur="handleNicknameInputChange"
+          focus="{{showNicknameDialog}}"
+          confirm-type="done"
+        />
+      </view>
+      <view class="nickname-modal-actions">
+        <button class="nickname-modal-btn secondary" bind:tap="handleNicknameCancel">取消</button>
+        <button class="nickname-modal-btn primary" bind:tap="handleNicknameConfirm">保存</button>
+      </view>
+    </view>
+  </view>
+
 </view>

@@ -15,28 +15,66 @@
       align-items: center;
       gap: @space-lg;
       
-      .user-avatar {
-        width: 120rpx;
-        height: 120rpx;
-        border-radius: 50%;
-        border: 4rpx solid rgba(255, 255, 255, 0.3);
-        background-color: rgba(255, 255, 255, 0.2);
+      .avatar-container {
+        position: relative;
+        cursor: pointer;
+        
+        .user-avatar {
+          width: 120rpx;
+          height: 120rpx;
+          border-radius: 50%;
+          border: 4rpx solid rgba(255, 255, 255, 0.3);
+          background-color: rgba(255, 255, 255, 0.2);
+          transition: all @duration-normal @ease-in-out;
+        }
+        
+        .avatar-edit-icon {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 36rpx;
+          height: 36rpx;
+          background: @primary-color;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: @font-sm;
+          border: 2rpx solid @white;
+          box-shadow: @shadow-sm;
+        }
+        
+        &:active .user-avatar {
+          transform: scale(0.95);
+        }
       }
       
       .user-details {
         flex: 1;
         
-        .user-name {
-          display: block;
-          font-size: @font-xl;
-          font-weight: 600;
-          margin-bottom: @space-sm;
-        }
-        
-        .user-id {
-          display: block;
-          font-size: @font-sm;
-          opacity: 0.8;
+        .nickname-container {
+          display: flex;
+          align-items: center;
+          gap: @space-sm;
+          cursor: pointer;
+          padding: @space-sm;
+          border-radius: @radius-lg;
+          transition: all @duration-normal @ease-in-out;
+          
+          &:active {
+            background: rgba(255, 255, 255, 0.1);
+          }
+          
+          .user-name {
+            font-size: @font-xl;
+            font-weight: 600;
+            color: @white;
+          }
+          
+          .edit-icon {
+            font-size: @font-sm;
+            opacity: 0.8;
+          }
         }
       }
     }
@@ -262,4 +300,86 @@
       }
     }
   }
+  
+  // 昵称编辑弹窗
+  .nickname-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    
+    .nickname-modal {
+      background: @white;
+      border-radius: @radius-xl;
+      padding: @space-2xl;
+      text-align: center;
+      max-width: 600rpx;
+      margin: 0 @space-xl;
+      
+      .nickname-modal-title {
+        font-size: @font-xl;
+        font-weight: 600;
+        color: @text-primary;
+        margin-bottom: @space-xl;
+      }
+      
+      .nickname-input-container {
+        margin-bottom: @space-2xl;
+        
+        .nickname-input {
+          border: 2rpx solid @border-light;
+          border-radius: @radius-lg;
+          padding: 24rpx 32rpx;
+          font-size: 32rpx;
+          width: 100%;
+          height: 88rpx;
+          line-height: 88rpx;
+          box-sizing: border-box;
+          background: @white;
+          color: @text-primary;
+          text-align: left;
+          
+          &:focus {
+            border-color: @primary-color;
+            outline: none;
+            box-shadow: 0 0 0 4rpx rgba(102, 126, 234, 0.1);
+          }
+        }
+      }
+      
+      .nickname-modal-actions {
+        display: flex;
+        gap: @space-lg;
+        
+        .nickname-modal-btn {
+          flex: 1;
+          padding: @space-md @space-xl;
+          border-radius: @radius-lg;
+          font-size: @font-base;
+          border: none;
+          
+          &.primary {
+            background: @primary-color;
+            color: @white;
+          }
+          
+          &.secondary {
+            background: @bg-primary;
+            color: @text-secondary;
+          }
+          
+          &:active {
+            transform: scale(0.98);
+          }
+        }
+      }
+    }
+  }
+  
 }

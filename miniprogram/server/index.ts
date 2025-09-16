@@ -241,10 +241,10 @@ export const updateUserInfo = async (
 ): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
-      name: 'todoList_profile',
+      name: 'todoList_userLogin',
       data: {
         action: 'updateUserInfo',
-        data: userData
+        data: { userInfo: userData }
       }
     });
     return res.result;

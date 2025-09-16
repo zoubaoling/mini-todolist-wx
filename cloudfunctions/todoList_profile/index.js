@@ -52,12 +52,7 @@ exports.main = async (event, context) => {
     console.log('开始执行处理器:', action)
 
     // 执行对应的处理方法
-    let result
-    if (action === 'updateUserInfo') {
-      result = await handler(cloud, db, OPENID, data)
-    } else {
-      result = await handler(cloud, db, OPENID)
-    }
+    const result = await handler(cloud, db, OPENID)
 
     console.log('处理器执行成功:', action, result)
 

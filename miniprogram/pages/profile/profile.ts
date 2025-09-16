@@ -1,5 +1,5 @@
 import { showModal, showToast, getDefaultUserStats, getDefaultUserInfo, isUserLoggedIn, extractUserInfoFromStorage, formatToPercentage } from '../../utils/util'
-import { getUserInfo, getTaskOverview, backupUserData, syncUserData, getBackupHistory, logout } from '../../server/index'
+import { getUserInfo, getTaskOverview, backupUserData, syncUserData, getBackupHistory, logout, updateUserInfo } from '../../server/index'
 import { UserInfo, TaskOverview } from '../../types/index'
 import { PROFILE_MENU_CONFIG } from '../../constants/index'
 
@@ -10,6 +10,9 @@ Page({
     showLoginModal: false,
     isLoggedIn: false,
     menuConfig: PROFILE_MENU_CONFIG,
+    // 编辑相关状态
+    showNicknameDialog: false,
+    editingNickname: ''
   },
 
 
@@ -48,8 +51,10 @@ Page({
   // 设置用户数据 - 统一的数据设置方法
   setUserData(userData: any) {
     if (isUserLoggedIn(userData)) {
+      // 处理微信头像URL
+      const processedUserData = this.processAvatarUrl(userData)
       this.setData({
-        userInfo: userData,
+        userInfo: processedUserData,
         isLoggedIn: true,
         showLoginModal: false
       })
@@ -60,6 +65,31 @@ Page({
         showLoginModal: true
       })
     }
+  },
+
+  // 处理头像URL
+  processAvatarUrl(userData: any) {
+    if (!userData.avatarUrl) {
+      return userData
+    }
+
+    const avatarUrl = userData.avatarUrl
+    
+    // 检查是否是微信头像URL
+    if (avatarUrl.includes('thirdwx.qlogo.cn')) {
+      
+      // 微信头像URL可能需要特殊处理
+      // 方案1: 尝试添加尺寸参数
+      const processedUrl = avatarUrl + '?x-oss-process=image/resize,w_200,h_200'
+      
+      return {
+        ...userData,
+        avatarUrl: processedUrl,
+        originalAvatarUrl: avatarUrl // 保存原始URL作为备用
+      }
+    }
+    
+    return userData
   },
 
   // 刷新用户数据 - 从云端获取最新数据
@@ -152,9 +182,7 @@ Page({
     wx.showLoading({ title: '备份中...' })
     
     try {
-      console.log('开始云端备份...')
       const res = await backupUserData()
-      console.log('云端备份结果:', res)
       
       if (res.success) {
         wx.hideLoading()
@@ -167,7 +195,6 @@ Page({
         this.updateLastBackupTime()
       } else {
         wx.hideLoading()
-        console.error('云端备份失败:', res)
         showToast({
           title: res.message || '云端备份失败',
           icon: 'error'
@@ -188,16 +215,12 @@ Page({
     wx.showLoading({ title: '准备备份文件...' })
     
     try {
-      console.log('开始本地备份...')
-      
       // 获取用户数据
       const userInfo = this.data.userInfo
       const userStats = this.data.userStats
       
       // 获取本地任务数据
       const localTasks = wx.getStorageSync('taskList') || []
-      
-      console.log('备份数据:', { userInfo, userStats, taskCount: localTasks.length })
       
       // 构建备份数据
       const backupData = {
@@ -220,7 +243,6 @@ Page({
       const fs = wx.getFileSystemManager()
       const tempFilePath = `${wx.env.USER_DATA_PATH}/${fileName}`
       
-      console.log('写入文件:', tempFilePath)
       fs.writeFileSync(tempFilePath, jsonData, 'utf8')
       
       wx.hideLoading()
@@ -228,8 +250,7 @@ Page({
       // 尝试保存文件到相册
       wx.saveFileToDisk({
         filePath: tempFilePath,
-        success: (res) => {
-          console.log('文件保存成功:', res)
+        success: () => {
           showToast({
             title: '备份文件已保存',
             icon: 'success'
@@ -362,9 +383,7 @@ Page({
     wx.showLoading({ title: '同步中...' })
     
     try {
-      console.log('开始云端同步...')
       const res = await syncUserData()
-      console.log('云端同步结果:', res)
       
       if (res.success) {
         // 保存云端数据到本地
@@ -391,7 +410,6 @@ Page({
         this.loadUserStats()
       } else {
         wx.hideLoading()
-        console.error('云端同步失败:', res)
         showToast({
           title: res.message || '云端同步失败',
           icon: 'error'
@@ -637,6 +655,224 @@ Page({
   closeLoginModal() {
     this.setData({
       showLoginModal: false
+    })
+  },
+
+  // 处理头像点击
+  handleAvatarTap() {
+    if (!this.data.isLoggedIn) {
+      this.setData({ showLoginModal: true })
+      return
+    }
+    
+    // 使用原生action-sheet
+    this.showNativeActionSheet()
+  },
+
+  // 显示原生action-sheet
+  showNativeActionSheet() {
+    wx.showActionSheet({
+      itemList: ['拍照', '从相册选择'],
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          // 拍照
+          this.chooseImage(['camera'], '拍照失败')
+        } else if (res.tapIndex === 1) {
+          // 从相册选择
+          this.chooseImage(['album'], '选择图片失败')
+        }
+      },
+      fail: () => {
+        // 用户取消或操作失败，无需处理
+      }
+    })
+  },
+
+  // 处理昵称点击
+  handleNicknameTap() {
+    if (!this.data.isLoggedIn) {
+      this.setData({ showLoginModal: true })
+      return
+    }
+    
+    const currentNickname = this.data.userInfo.nickName || ''
+    this.setData({
+      showNicknameDialog: true,
+      editingNickname: currentNickname
+    })
+  },
+
+  // 选择图片的通用方法
+  chooseImage(sourceType: ('album' | 'camera')[], errorMessage: string) {
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: sourceType,
+      success: (res) => {
+        this.uploadAvatar(res.tempFilePaths[0])
+      },
+      fail: (error) => {
+        console.error(`${errorMessage}失败:`, error)
+        showToast({
+          title: errorMessage,
+          icon: 'error'
+        })
+      }
+    })
+  },
+
+  // 上传头像
+  async uploadAvatar(filePath: string) {
+    wx.showLoading({ title: '上传中...' })
+    
+    try {
+      // 先上传到云存储
+      const cloudPath = `avatars/todoList_${this.data.userInfo.openid}_${Date.now()}.jpg`
+      const uploadResult = await wx.cloud.uploadFile({
+        cloudPath: cloudPath,
+        filePath
+      })
+      if (uploadResult.fileID) {
+        // 上传成功，更新云端用户信息
+        const res = await updateUserInfo({ avatarUrl: uploadResult.fileID })
+        
+        if (res.success) {
+          // 云端更新成功，更新本地数据
+          const userInfo = {
+            ...this.data.userInfo,
+            avatarUrl: uploadResult.fileID
+          }
+          
+          // 更新本地存储
+          wx.setStorageSync('userInfo', userInfo)
+          
+          // 更新页面数据
+          this.setData({
+            userInfo: userInfo
+          })
+          
+          wx.hideLoading()
+          showToast({
+            title: '头像更新成功',
+            icon: 'success'
+          })
+        } else {
+          wx.hideLoading()
+          showToast({
+            title: res.message || '头像更新失败',
+            icon: 'error'
+          })
+        }
+      } else {
+        wx.hideLoading()
+        showToast({
+          title: '头像上传失败',
+          icon: 'error'
+        })
+      }
+      
+    } catch (error) {
+      wx.hideLoading()
+      console.error('上传头像失败:', error)
+      showToast({
+        title: '上传头像失败',
+        icon: 'error'
+      })
+    }
+  },
+
+  // 处理昵称输入变化
+  handleNicknameInputChange(e: any) {
+    this.setData({
+      editingNickname: e.detail.value
+    })
+  },
+
+  // 确认修改昵称
+  async handleNicknameConfirm() {
+    const newNickname = this.data.editingNickname.trim()
+    if (!newNickname) {
+      showToast({
+        title: '昵称不能为空',
+        icon: 'error'
+      })
+      return
+    }
+    
+    if (newNickname.length > 20) {
+      showToast({
+        title: '昵称不能超过20个字符',
+        icon: 'error'
+      })
+      return
+    }
+    
+    wx.showLoading({ title: '保存中...' })
+    
+    try {
+      // 先调用云函数更新云端数据
+      const res = await updateUserInfo({ nickName: newNickname })
+      
+      if (res.success) {
+        // 云端更新成功，更新本地数据
+        const userInfo = {
+          ...this.data.userInfo,
+          nickName: newNickname
+        }
+        
+        // 更新本地存储
+        wx.setStorageSync('userInfo', userInfo)
+        
+        // 更新页面数据
+        this.setData({
+          userInfo: userInfo,
+          showNicknameDialog: false
+        })
+        
+        wx.hideLoading()
+        showToast({
+          title: '昵称修改成功',
+          icon: 'success'
+        })
+      } else {
+        wx.hideLoading()
+        showToast({
+          title: res.message || '昵称修改失败',
+          icon: 'error'
+        })
+      }
+      
+    } catch (error) {
+      wx.hideLoading()
+      console.error('修改昵称失败:', error)
+      showToast({
+        title: '修改昵称失败',
+        icon: 'error'
+      })
+    }
+  },
+
+  // 取消修改昵称
+  handleNicknameCancel() {
+    this.setData({
+      showNicknameDialog: false,
+      editingNickname: ''
+    })
+  },
+
+  // 处理头像加载错误
+  handleAvatarError() {
+    this.setDefaultAvatar()
+  },
+
+  // 设置默认头像
+  setDefaultAvatar() {
+    const userInfo = {
+      ...this.data.userInfo,
+      avatarUrl: '/assets/images/default-avatar.png'
+    }
+    this.setData({
+      userInfo: userInfo
     })
   }
 })
