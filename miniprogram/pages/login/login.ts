@@ -1,4 +1,4 @@
-import { nextTick } from '../../utils/util'
+import { userLogin } from '../../server/index'
 Page({
   async onLogin() {
     this.showToast('登陆中...', 'loading')
@@ -7,7 +7,7 @@ Page({
     // 2. 获取微信登录凭证
     const { code: loginCode } = await this.getLoginCode() as { code: string }
     // 3. 调用云函数处理了登陆
-    const loginRes = await this.callLoginCloudFunction(userInfo, loginCode)
+    const loginRes = await userLogin({ userInfo, loginCode })
     // 4. 处理用户数据
     this.saveUserData(loginRes.data)
     this.showToast('登陆成功', 'success')
@@ -35,22 +35,6 @@ Page({
         success: resolve,
         fail: reject
       })
-    })
-  },
-  callLoginCloudFunction (userInfo: any, loginCode: any) {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const result = await wx.cloud.callFunction({
-          name: 'todoList_userLogin',
-          data: {
-            userInfo: userInfo,
-            loginCode: loginCode
-          }
-        })
-        resolve(result.result)
-      } catch (error) {
-        reject(error)
-      }
     })
   },
   showToast(message: string, theme: string) {
