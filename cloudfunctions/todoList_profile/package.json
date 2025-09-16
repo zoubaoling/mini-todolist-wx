@@ -1,0 +1,10 @@
+{
+  "name": "todoList_profile",
+  "version": "1.0.0",
+  "description": "个人中心相关云函数",
+  "main": "index.js",
+  "dependencies": {
+    "dayjs": "^1.11.18",
+    "wx-server-sdk": "~2.6.3"
+  }
+}
