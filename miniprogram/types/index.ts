@@ -18,13 +18,17 @@ export enum TaskPriority {
   LOW = '低'
 }
 export interface TaskItem {
-  id: number,
+  author: {
+    openid: string
+  },
+  _id: string,
   text: string,
   desc?: string,
   category: keyof typeof TaskCategory,
   isReminder: boolean,
-  deadline?: string,
-  date: string
+  deadline?: Date,
+  createTime: Date,
+  completedTime?: Date,
   priority: keyof typeof TaskPriority
   status: keyof typeof TaskStatus,
 }
@@ -54,4 +58,27 @@ export interface ApiResponse<T> {
   success: boolean,
   data?: T,
   message?: string
+}
+export interface ShowModalOptions {
+  title?: string
+  content?: string
+  confirmText?: string
+  confirmColor?: string
+  cancelText?: string
+}
+export interface ServerApiConfigOptions {
+  loading?: boolean
+  loadingText?: string,
+  errorMessage?: string
+}
+
+// 用户信息相关接口
+export interface UserInfo {
+  _id?: string
+  openid?: string
+  nickName?: string
+  avatarUrl?: string
+  createTime?: string
+  updateTime?: string
+  isActive?: boolean
 }

@@ -1,0 +1,265 @@
+@import '../../style/design-system.less';
+
+.profile-page {
+  background-color: @bg-primary;
+  min-height: 100vh;
+  
+  // 用户信息头部
+  .profile-header {
+    background: @primary-gradient;
+    padding: @space-2xl @space-xl;
+    color: @white;
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: @space-lg;
+      
+      .user-avatar {
+        width: 120rpx;
+        height: 120rpx;
+        border-radius: 50%;
+        border: 4rpx solid rgba(255, 255, 255, 0.3);
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      .user-details {
+        flex: 1;
+        
+        .user-name {
+          display: block;
+          font-size: @font-xl;
+          font-weight: 600;
+          margin-bottom: @space-sm;
+        }
+        
+        .user-id {
+          display: block;
+          font-size: @font-sm;
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+  
+  // 数据统计区域
+  .stats-section {
+    padding: @space-xl;
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: @space-lg;
+      
+      .stat-card {
+        background: @white;
+        border-radius: @radius-xl;
+        padding: @space-xl;
+        text-align: center;
+        box-shadow: @shadow-md;
+        
+        .stat-number {
+          display: block;
+          font-size: @font-2xl;
+          font-weight: bold;
+          color: @primary-color;
+          margin-bottom: @space-sm;
+        }
+        
+        .stat-label {
+          display: block;
+          font-size: @font-sm;
+          color: @text-secondary;
+        }
+      }
+    }
+  }
+  
+  // 菜单区域
+  .menu-section {
+    padding: 0 @space-xl @space-xl;
+    
+    .menu-group {
+      background: @white;
+      border-radius: @radius-xl;
+      margin-bottom: @space-lg;
+      overflow: hidden;
+      box-shadow: @shadow-md;
+      
+      .menu-group-title {
+        font-size: @font-lg;
+        font-weight: 600;
+        color: @text-primary;
+        padding: @space-lg @space-xl;
+        border-bottom: 1rpx solid @border-light;
+        background: @bg-primary;
+      }
+      
+      .menu-item {
+        display: flex;
+        align-items: center;
+        padding: @space-lg @space-xl;
+        border-bottom: 1rpx solid @border-light;
+        transition: all @duration-normal @ease-in-out;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        &:active {
+          background: @bg-primary;
+        }
+        
+        .menu-icon {
+          width: 48rpx;
+          height: 48rpx;
+          margin-right: @space-lg;
+          font-size: @font-lg;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .menu-text {
+          flex: 1;
+          font-size: @font-base;
+          color: @text-primary;
+        }
+        
+        .menu-arrow {
+          color: @text-tertiary;
+          font-size: @font-sm;
+        }
+      }
+    }
+  }
+  
+  // 调试信息区域
+  .debug-section {
+    margin: @space-xl;
+    padding: @space-lg;
+    background: @white;
+    border-radius: @radius-xl;
+    box-shadow: @shadow-md;
+    
+    .debug-title {
+      font-size: @font-lg;
+      font-weight: 600;
+      color: @text-primary;
+      margin-bottom: @space-md;
+    }
+    
+    .debug-content {
+      margin-bottom: @space-sm;
+      font-size: @font-sm;
+      color: @text-secondary;
+      word-break: break-all;
+    }
+  }
+
+  // 退出登录区域
+  .logout-section {
+    padding: 0 @space-xl @space-2xl;
+    display: flex;
+    flex-direction: column;
+    gap: @space-md;
+    
+    .debug-btn {
+      width: 100%;
+      padding: @space-lg;
+      background: @primary-color;
+      color: @white;
+      border: none;
+      border-radius: @radius-xl;
+      font-size: @font-base;
+      font-weight: 600;
+      box-shadow: @shadow-md;
+      
+      &:active {
+        background: darken(@primary-color, 10%);
+        transform: scale(0.98);
+      }
+    }
+    
+    .logout-btn {
+      width: 100%;
+      padding: @space-lg;
+      background: @error-color;
+      color: @white;
+      border: none;
+      border-radius: @radius-xl;
+      font-size: @font-base;
+      font-weight: 600;
+      box-shadow: @shadow-md;
+      
+      &:active {
+        background: darken(@error-color, 10%);
+        transform: scale(0.98);
+      }
+    }
+  }
+  
+  // 登录弹窗
+  .login-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    
+    .login-modal {
+      background: @white;
+      border-radius: @radius-xl;
+      padding: @space-2xl;
+      text-align: center;
+      max-width: 600rpx;
+      margin: 0 @space-xl;
+      
+      .login-modal-title {
+        font-size: @font-xl;
+        font-weight: 600;
+        color: @text-primary;
+        margin-bottom: @space-lg;
+      }
+      
+      .login-modal-content {
+        font-size: @font-base;
+        color: @text-secondary;
+        margin-bottom: @space-2xl;
+        line-height: @line-height-normal;
+      }
+      
+      .login-modal-actions {
+        display: flex;
+        gap: @space-lg;
+        
+        .login-modal-btn {
+          flex: 1;
+          padding: @space-md @space-xl;
+          border-radius: @radius-lg;
+          font-size: @font-base;
+          border: none;
+          
+          &.primary {
+            background: @primary-color;
+            color: @white;
+          }
+          
+          &.secondary {
+            background: @bg-primary;
+            color: @text-secondary;
+          }
+          
+          &:active {
+            transform: scale(0.98);
+          }
+        }
+      }
+    }
+  }
+}

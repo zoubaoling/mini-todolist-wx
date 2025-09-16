@@ -1,5 +1,5 @@
 import { TASK_PRIORITY, TASK_CATEGORY } from "../../constants/index"
-import { debounce } from "../../utils/util"
+import { debounce, showToastWithPromise } from "../../utils/util"
 import TimeUtils from "../../utils/timer"
 import * as serverApi from '../../server/index'
 Page({
@@ -37,17 +37,31 @@ Page({
     wx.navigateBack()
   },
   async handleSaveTask() {
-    const deadline = TimeUtils.combineDateTimeSafe(this.data.taskFormData.deadlineDate, this.data.taskFormData.deadlineTime)
-    await taskApi.addTask({
-      ...this.data.taskFormData,
+    const { deadlineTime, deadlineDate, ...restFormData } = this.data.taskFormData
+    const deadline = TimeUtils.combineDateTimeSafe(deadlineDate, deadlineTime)
+    const saveFunc = this.data.isEdit ? serverApi.editTask : serverApi.addTask
+    await saveFunc({
+      ...restFormData,
       deadline
     })
-    wx.navigateBack()
+    await showToastWithPromise({
+      title: '保存成功',
+      icon: 'success',
+      duration: 1500
+    })
+    if (this.data.isEdit) {
+      wx.switchTab({
+        url: '/pages/home/home'
+      })
+    } else {
+      wx.navigateBack()
+    }
   },
   updateFormFieldData (e: any) {
     const { field, type } = e.currentTarget.dataset
     this.setData({
-      [`taskFormData.${field}`]: ['text', 'desc', 'isReminder'].includes(field) ? e.detail.value : type
+      [`taskFormData.${field}`]: ['text', 'desc', 'isReminder', 'deadlineDate', 'deadlineTime'].includes(field) ? e.detail.value : type
+    }, () => {
     })
   },
   initPriorityList () {

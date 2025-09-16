@@ -1,7 +1,9 @@
 // app.ts
 import { cloudConfig } from './utils/config'
 App({
-  globalData: {},
+  globalData: {
+    userinfo: {}
+  },
   onLaunch() {
     this.initCloud()
     // 展示本地存储能力

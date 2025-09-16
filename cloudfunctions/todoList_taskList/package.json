@@ -1,0 +1,10 @@
+{
+  "name": "todoList_taskList",
+  "version": "1.0.0",
+  "description": "任务列表云函数-处理任务相关业务逻辑",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3",
+    "dayjs": "^1.11.18"
+  }
+}

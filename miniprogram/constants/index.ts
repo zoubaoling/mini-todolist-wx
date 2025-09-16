@@ -89,6 +89,10 @@ export const TASK_MAPS = {
 // 统计维度
 export const STATS_DIMENSION = [
   {
+    label: '全部',
+    value: 'ALL'
+  },
+  {
     label: '今天',
     value: 'DAY'
   },
@@ -99,9 +103,41 @@ export const STATS_DIMENSION = [
   {
     label: '本月',
     value: 'MONTH'
-  },
-  {
-    label: '全部',
-    value: 'ALL'
   }
 ]
+
+// 个人中心相关常量
+export const PROFILE_CONSTANTS = {
+  DEFAULT_AVATAR: '/assets/images/default-avatar.png',
+  DEFAULT_USER_NAME: '未登录',
+  DEFAULT_USER_ID: '未知',
+  DEFAULT_COMPLETION_RATE: '0%'
+}
+
+// 个人中心菜单配置
+export const PROFILE_MENU_CONFIG = {
+  MY_DATA: {
+    title: '我的数据',
+    items: [
+      { icon: '📊', text: '数据统计', action: 'navigateToStats' },
+      { icon: '📁', text: '数据备份', action: 'handleDataBackup' },
+      { icon: '🔄', text: '数据同步', action: 'handleDataSync' }
+    ]
+  },
+  SETTINGS: {
+    title: '设置',
+    items: [
+      { icon: '🔔', text: '提醒设置', action: 'handleNotificationSettings' },
+      { icon: '🎨', text: '主题设置', action: 'handleThemeSettings' },
+      { icon: '🔒', text: '隐私设置', action: 'handlePrivacySettings' }
+    ]
+  },
+  HELP_FEEDBACK: {
+    title: '帮助与反馈',
+    items: [
+      { icon: '❓', text: '使用帮助', action: 'handleHelp' },
+      { icon: '💬', text: '意见反馈', action: 'handleFeedback' },
+      { icon: 'ℹ️', text: '关于我们', action: 'handleAbout' }
+    ]
+  }
+}
