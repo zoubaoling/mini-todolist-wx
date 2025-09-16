@@ -1,1 +1,70 @@
-<view>profile</view>
+<view class="profile-page">
+  <!-- 用户信息头部 -->
+  <view class="profile-header">
+    <view class="user-info">
+      <image 
+        class="user-avatar" 
+        src="{{userInfo.avatarUrl || '/assets/images/default-avatar.png'}}"
+        mode="aspectFill"
+      />
+      <view class="user-details">
+        <text class="user-name">{{userInfo.nickName || '未登录'}}</text>
+        <text class="user-id">ID: {{userInfo.openid || '未知'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据统计卡片 -->
+  <view class="stats-section">
+    <view class="stats-grid">
+      <view class="stat-card">
+        <text class="stat-number">{{userStats.total || 0}}</text>
+        <text class="stat-label">总任务数</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-number">{{userStats.completed || 0}}</text>
+        <text class="stat-label">已完成</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-number">{{userStats.continuousDays || 0}}</text>
+        <text class="stat-label">连续天数</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-number">{{userStats.completionRateStr || '0%'}}</text>
+        <text class="stat-label">完成率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view wx:for="{{menuConfig}}" wx:key="title" class="menu-group">
+      <view class="menu-group-title">{{item.title}}</view>
+      <view wx:for="{{item.items}}" wx:key="text" wx:for-item="menuItem" class="menu-item" bind:tap="{{menuItem.action}}">
+        <view class="menu-icon">{{menuItem.icon}}</view>
+        <text class="menu-text">{{menuItem.text}}</text>
+        <view class="menu-arrow">></view>
+      </view>
+    </view>
+  </view>
+
+
+  <!-- 退出登录按钮 -->
+  <view class="logout-section">
+    <button class="logout-btn" bind:tap="handleLogout">
+      退出登录
+    </button>
+  </view>
+
+  <!-- 登录提示弹窗 -->
+  <view wx:if="{{showLoginModal}}" class="login-modal-overlay" bind:tap="closeLoginModal">
+    <view class="login-modal" catch:tap="stopPropagation">
+      <view class="login-modal-title">需要登录</view>
+      <view class="login-modal-content">请先登录以查看您的个人数据</view>
+      <view class="login-modal-actions">
+        <button class="login-modal-btn primary" bind:tap="goToLogin">去登录</button>
+        <button class="login-modal-btn secondary" bind:tap="closeLoginModal">取消</button>
+      </view>
+    </view>
+  </view>
+</view>

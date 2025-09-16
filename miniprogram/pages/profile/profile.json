@@ -1,1 +1,5 @@
-{}
+{
+  "usingComponents": {
+    "navigator-bar": "/components/navigator-bar/navigator-bar"
+  }
+}
