@@ -1,6 +1,17 @@
-import { TaskItem, TaskListParams, TaskStatus, DateType, TaskOverview, ApiResponse, ServerApiConfigOptions, TaskCategoryCompletion } from '../types/index'
+import { TaskItem, TaskListParams, TaskStatus, DateType, ApiResponse, ServerApiConfigOptions } from '../types/index'
+
+// 用户信息相关接口
+interface UserInfo {
+  _id?: string
+  openid?: string
+  nickName?: string
+  avatarUrl?: string
+  createTime?: string
+  updateTime?: string
+  isActive?: boolean
+}
+
 import { apiWrapper } from '../utils/util'
-const cloudFunctionPrefix = 'todoList_'
 /**
  * callFunction返回格式： {
  *  errMsg: string,
@@ -14,7 +25,7 @@ const cloudFunctionPrefix = 'todoList_'
 export const getTaskOverview = async (
   dateType: DateType = 'ALL',
   options: ServerApiConfigOptions = {}
-): Promise<ApiResponse<TaskOverview[]>> => {
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
       name: 'todoList_taskList',
@@ -32,7 +43,7 @@ export const getTaskOverview = async (
 export const getTaskList = async (
   params: TaskListParams,
   options: ServerApiConfigOptions = {}
-): Promise<ApiResponse<TaskItem[]>> => {
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
       name: 'todoList_taskList',
@@ -50,7 +61,7 @@ export const getTaskList = async (
 export const getTaskDetail = async (
   id: string,
   options: ServerApiConfigOptions = {}
-): Promise<ApiResponse<TaskItem>> => {
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
       name: 'todoList_taskList',
@@ -123,7 +134,7 @@ export const updateTaskStatus = async (
   id: string,
   status: keyof typeof TaskStatus,
   options: ServerApiConfigOptions = { loading: true, loadingText: '更新中...' }
-): Promise<ApiResponse<string>> => {
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
       name: 'todoList_taskList',
@@ -142,7 +153,7 @@ export const updateTaskStatus = async (
 export const getTaskCategoryCompletion = async (
   dateType: DateType = 'ALL',
   options: ServerApiConfigOptions = {}
-): Promise<ApiResponse<TaskCategoryCompletion[]>> => {
+): Promise<ApiResponse<any>> => {
   return apiWrapper(async () => {
     const res = await wx.cloud.callFunction({
       name: 'todoList_taskList',
@@ -151,6 +162,134 @@ export const getTaskCategoryCompletion = async (
         data: {
           dateType
         }
+      }
+    });
+    return res.result;
+  }, options);
+};
+
+// 获取备份历史记录
+export const getBackupHistory = async (
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<any>> => {
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_profile',
+      data: {
+        action: 'getBackupHistory'
+      }
+    });
+    return res.result;
+  }, options);
+};
+// ==================== 用户登录相关接口 ====================
+// 用户登录
+export const userLogin = async (
+  params: any,
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<any>> => {
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_userLogin',
+      data: {
+        action: 'userLogin',
+        data: params
+      }
+    });
+    return res.result;
+  }, options);
+};
+
+// ==================== 个人中心相关接口 ====================
+
+// 获取用户信息
+export const getUserInfo = async (
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<any>> => {
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_userLogin',
+      data: {
+        action: 'getUserInfo'
+      }
+    });
+    return res.result;
+  }, options);
+};
+
+// 获取用户统计数据
+export const getUserStats = async (
+  options: ServerApiConfigOptions = {}
+): Promise<ApiResponse<any>> => {
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_profile',
+      data: {
+        action: 'getUserStats'
+      }
+    });
+    // 云函数返回格式: {success: true, data: {...}, message: "操作成功"}
+    // 我们只需要返回 data 部分，让 apiWrapper 重新包装
+    return (res.result as any).data;
+  }, options);
+};
+
+// 更新用户信息
+export const updateUserInfo = async (
+  userData: Partial<UserInfo>,
+  options: ServerApiConfigOptions = { loading: true, loadingText: '更新中...' }
+): Promise<ApiResponse<any>> => {
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_profile',
+      data: {
+        action: 'updateUserInfo',
+        data: userData
+      }
+    });
+    return res.result;
+  }, options);
+};
+
+// 数据备份
+export const backupUserData = async (
+  options: ServerApiConfigOptions = { loading: true, loadingText: '备份中...' }
+): Promise<ApiResponse<any>> => { 
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_profile',
+      data: {
+        action: 'backupUserData'
+      }
+    });
+    return res.result;
+  }, options);
+};
+
+// 数据同步
+export const syncUserData = async (
+  options: ServerApiConfigOptions = { loading: true, loadingText: '同步中...' }
+): Promise<ApiResponse<any>> => {
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_profile',
+      data: {
+        action: 'syncUserData'
+      }
+    });
+    return res.result;
+  }, options);
+};
+
+// 用户登出
+export const logout = async (
+  options: ServerApiConfigOptions = { loading: true, loadingText: '退出中...' }
+): Promise<ApiResponse<any>> => {
+  return apiWrapper(async () => {
+    const res = await wx.cloud.callFunction({
+      name: 'todoList_userLogin',
+      data: {
+        action: 'logout'
       }
     });
     return res.result;

@@ -41,7 +41,6 @@ Page({
   // 获取概览信息
   async getOverviewData() {
     const res = await serverApi.getTaskOverview()
-    console.log('getOverviewData', res)
     if (res.success && res.data) {
       const { total, completed, doing, completionRate } = res.data as any
       this.setData({

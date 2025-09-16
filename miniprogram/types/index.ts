@@ -71,3 +71,14 @@ export interface ServerApiConfigOptions {
   loadingText?: string,
   errorMessage?: string
 }
+
+// 用户信息相关接口
+export interface UserInfo {
+  _id?: string
+  openid?: string
+  nickName?: string
+  avatarUrl?: string
+  createTime?: string
+  updateTime?: string
+  isActive?: boolean
+}

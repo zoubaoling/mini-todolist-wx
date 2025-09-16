@@ -31,9 +31,13 @@ export const setDataAndWait = (page: any, data: any): Promise<void> => {
     })
   })
 }
-export const showToastWithPromise = (options) => {
+export const showToast = (options: any) => {
+  wx.showToast(options)
+}
+
+export const showToastWithPromise = (options: any) => {
   return new Promise((resolve) => {
-    let timer = null
+    let timer: any = null
     wx.showToast({
       ...options,
       success: () => {
@@ -54,7 +58,7 @@ export const formatToPercentage = (num: number, precision: number = 0) => {
 export const apiWrapper = async <T>(
   apiCall: () => Promise<T>,
   options: {
-    errorMessage: string,
+    errorMessage?: string,
     loading?: boolean;
     loadingText?: string;
   } = {}
@@ -145,4 +149,33 @@ export const showModal = ({
       }
     })
   })
+}
+
+// 个人中心相关工具函数
+export const getDefaultUserStats = () => ({
+  total: 0,
+  completed: 0,
+  doing: 0,
+  continuousDays: 0,
+  completionRate: 0
+})
+
+export const getDefaultUserInfo = () => ({})
+
+export const isUserLoggedIn = (userInfo: any) => {
+  return userInfo && userInfo.openid
+}
+
+export const extractUserInfoFromStorage = (storageData: any) => {
+  if (!storageData) return null
+  
+  if (storageData.userInfo) {
+    // 数据结构: { userInfo: {...}, isNewUser: boolean }
+    return storageData.userInfo
+  } else if (storageData.openid) {
+    // 数据结构: { openid: string, ... }
+    return storageData
+  }
+  
+  return null
 }
